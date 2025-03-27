@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { API_URL, getUserProfile, loginUser } from '../lib/api';
+import { loginUser, registerUser } from '../lib/api';
 import axios from 'axios';
 
 interface AuthContextType {
@@ -28,47 +28,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (storedToken) {
       setToken(storedToken);
-      fetchUser(storedToken);
+      // fetchUser(storedToken);
     }
   }, []);
 
-  const fetchUser = async (jwt: string) => {
-    try {
-      const userData = getUserProfile(jwt);
-      setUser(userData);
-    } catch (err) {
-      console.error('Error user loading', err);
-      logout();
-    }
-  };
+  // const fetchUser = async (jwt: string) => {
+  //   try {
+  //     const userData = getUserProfile(jwt);
+  //     setUser(userData);
+  //   } catch (err) {
+  //     console.error('Error user loading', err);
+  //     logout();
+  //   }
+  // };
 
   const login = async (email: string, password: string) => {
     try {
       const data = await loginUser(email, password);
-      setToken(data.token);
-      localStorage.setItem('token', data.token);
-      fetchUser(data.token);
-      router.push('/');
+
+      signIn(data.token, data.id);
     } catch (err) {
-      console.error('Error login', err);
+      throw err;
     }
   };
 
   const register = async (login: string, email: string, password: string) => {
     try {
-      const res = await axios.post(`${API_URL}/user/register`, {
-        login,
-        email,
-        password,
-      });
+      const data = await registerUser(login, email, password);
 
-      setToken(res.data.token);
-      localStorage.setItem('token', res.data.token);
-      fetchUser(res.data.token);
-      router.push('/');
+      signIn(data.token, data.id);
     } catch (err: any) {
       throw err;
     }
+  };
+
+  const signIn = (token: string, profileId: string) => {
+    setToken(token);
+    localStorage.setItem('token', token);
+
+    router.push(`/profile/${profileId}`);
   };
 
   const logout = () => {

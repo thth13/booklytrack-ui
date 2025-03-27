@@ -1,8 +1,10 @@
 'use client';
 import { useState, useContext, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { AuthContext } from '@/src/context/AuthContext';
 import { useTheme } from '@/src/context/ThemeContext';
+import themeStyles from '@/src/lib/themeStyles';
 
 interface FormData {
   login: string;
@@ -35,45 +37,24 @@ export default function RegistrationForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const themeStyles = {
-    light: {
-      background: '#f4f4f4',
-      cardBackground: '#fff',
-      textColor: '#000',
-      inputBackground: '#fff',
-      inputBorder: '#ccc',
-    },
-    dark: {
-      background: '#1a1a1a',
-      cardBackground: '#2d2d2d',
-      textColor: '#fff',
-      inputBackground: '#3d3d3d',
-      inputBorder: '#505050',
-    },
-  };
-
   const currentTheme = themeStyles[theme];
 
   const validateForm = (): boolean => {
     const newErrors: ValidationErrors = {};
 
-    // Валидация логина
-    // if (formData.login.length < 1) {
-    //   newErrors.login = 'Логин должен содержать минимум 3 символааа';
-    // }
+    if (formData.login.length < 1) {
+      newErrors.login = 'Логин должен содержать минимум 3 символааа';
+    }
 
-    // Валидация email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       newErrors.email = 'Пожалуйста, введите корректный email';
     }
 
-    // Валидация пароля
     if (formData.password.length < 6) {
       newErrors.password = 'Пароль должен содержать минимум 6 символов';
     }
 
-    // Валидация подтверждения пароля
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Пароли не совпадают';
     }
@@ -84,7 +65,7 @@ export default function RegistrationForm() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Очищаем ошибку при изменении поля
+
     if (errors[e.target.name as keyof ValidationErrors]) {
       setErrors({ ...errors, [e.target.name]: undefined });
     }
@@ -92,7 +73,7 @@ export default function RegistrationForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrors({}); // Очищаем предыдущие ошибки
+    setErrors({});
 
     if (!validateForm()) {
       return;
