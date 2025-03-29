@@ -24,8 +24,8 @@ export default function RegistrationForm() {
   const { login } = auth;
 
   const [formData, setFormData] = useState<FormData>({
-    email: 'thth13@gmail.com',
-    password: '123456',
+    email: '',
+    password: '',
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ValidationErrors>({});

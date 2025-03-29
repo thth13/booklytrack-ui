@@ -52,9 +52,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (login: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string) => {
     try {
-      const data = await registerUser(login, email, password);
+      const data = await registerUser(name, email, password);
 
       signIn(data.token, data.id);
     } catch (err: any) {
