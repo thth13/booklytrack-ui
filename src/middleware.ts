@@ -1,8 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
-export function middleware(req: Request) {
-  const token = req.headers.get('Authorization');
-  if (!token && new URL(req.url).pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/login', req.url));
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get('accessToken')?.value;
+  const userId = req.cookies.get('userId')?.value;
+
+  if (token) {
+    return NextResponse.redirect(new URL(`/profile/${userId}`, req.url));
   }
 }
+
+export const config = {
+  matcher: ['/', '/auth/login', '/auth/register'],
+};

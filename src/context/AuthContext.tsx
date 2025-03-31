@@ -3,6 +3,7 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginUser, registerUser } from '../lib/api';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 interface AuthContextType {
   user: object | null;
@@ -24,29 +25,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = Cookies.get('accessToken');
 
     if (storedToken) {
       setToken(storedToken);
-      // fetchUser(storedToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
     }
   }, []);
-
-  // const fetchUser = async (jwt: string) => {
-  //   try {
-  //     const userData = getUserProfile(jwt);
-  //     setUser(userData);
-  //   } catch (err) {
-  //     console.error('Error user loading', err);
-  //     logout();
-  //   }
-  // };
 
   const login = async (email: string, password: string) => {
     try {
       const data = await loginUser(email, password);
 
-      signIn(data.token, data.id);
+      signIn(data);
     } catch (err) {
       throw err;
     }
@@ -56,24 +47,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const data = await registerUser(name, email, password);
 
-      signIn(data.token, data.id);
+      signIn(data);
     } catch (err: any) {
       throw err;
     }
   };
 
-  const signIn = (token: string, profileId: string) => {
-    setToken(token);
-    localStorage.setItem('token', token);
+  const signIn = (userData: any) => {
+    const { id, accessToken, refreshToken } = userData;
 
-    router.push(`/profile/${profileId}`);
+    setToken(accessToken);
+    Cookies.set('accessToken', accessToken, { path: '/' });
+    Cookies.set('refreshToken', refreshToken, { path: '/' });
+    Cookies.set('userId', id, { path: '/' });
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+    router.push(`/profile/${id}`);
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('token');
-    router.push('/login');
+
+    const cookiesToRemove = ['accessToken', 'refreshToken', 'userId'];
+    cookiesToRemove.forEach((cookie) => Cookies.remove(cookie, { path: '/' }));
+
+    axios.defaults.headers.common['Authorization'] = '';
+
+    router.push('/');
   };
 
   return <AuthContext.Provider value={{ user, token, login, logout, register }}>{children}</AuthContext.Provider>;
