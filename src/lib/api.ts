@@ -1,9 +1,9 @@
-import axios from 'axios';
-
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+import { api } from './authAxios';
+import { API_URL } from './authAxios';
 
 interface AuthResponse {
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   id: string;
 }
 
@@ -21,7 +21,7 @@ export interface UserProfile {
 
 export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
   try {
-    const res = await axios.post(`${API_URL}/user/login`, {
+    const res = await api.post(`${API_URL}/user/login`, {
       email,
       password,
     });
@@ -34,7 +34,19 @@ export const loginUser = async (email: string, password: string): Promise<AuthRe
 
 export const getProfile = async (id: string): Promise<UserProfile> => {
   try {
-    const res = await axios.get(`${API_URL}/profile/${id}`);
+    const res = await api.get(`${API_URL}/profile/${id}`);
+
+    return res.data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const refreshAccessToken = async (refreshToken: string): Promise<AuthResponse> => {
+  try {
+    const res = await api.post(`${API_URL}/user/refresh-access-token'`, {
+      refreshToken,
+    });
 
     return res.data;
   } catch (err: any) {
@@ -44,7 +56,7 @@ export const getProfile = async (id: string): Promise<UserProfile> => {
 
 export const registerUser = async (name: string, email: string, password: string): Promise<AuthResponse> => {
   try {
-    const res = await axios.post(`${API_URL}/user/register`, {
+    const res = await api.post(`${API_URL}/user/register`, {
       name,
       email,
       password,

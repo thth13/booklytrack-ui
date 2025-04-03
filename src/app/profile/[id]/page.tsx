@@ -25,7 +25,6 @@ export default async function Profile({ params }: ProfilePageParams) {
 
 async function fetchUserProfile(id: string): Promise<UserProfile | null> {
   try {
-    console.log(id);
     const data = await getProfile(id);
 
     return data;
