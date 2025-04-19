@@ -1,3 +1,4 @@
+import { ProfileFormData } from '../app/profile/edit/page';
 import { api } from './authAxios';
 import { API_URL } from './authAxios';
 
@@ -60,6 +61,20 @@ export const registerUser = async (name: string, email: string, password: string
       name,
       email,
       password,
+    });
+
+    return res.data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const editProfile = async (id: string, profile: FormData): Promise<UserProfile> => {
+  try {
+    const res = await api.put(`${API_URL}/profile/${id}`, profile, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     return res.data;
