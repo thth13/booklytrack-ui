@@ -1,0 +1,86 @@
+.book-page-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2.5rem 2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #f9fafb;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.book-page-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.book-page-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+  outline: none;
+}
+
+.book-page-btn:hover {
+  background: #2563eb;
+}
+
+.book-page-btn.add {
+  background: #10b981;
+}
+
+.book-page-btn.add:hover {
+  background: #059669;
+}
+
+.book-details {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.book-cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  flex-shrink: 0;
+  background: #e5e7eb;
+}
+
+.book-info {
+  flex: 1;
+}
+
+.book-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.book-authors,
+.book-publisher,
+.book-date {
+  margin-bottom: 0.5rem;
+  color: #475569;
+  font-size: 1.05rem;
+}
+
+.book-description {
+  margin-top: 1rem;
+  color: #334155;
+  line-height: 1.6;
+  font-size: 1.08rem;
+}

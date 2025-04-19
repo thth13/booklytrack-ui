@@ -1,5 +1,4 @@
-import { ProfileFormData } from '../app/profile/edit/page';
-import { api } from './authAxios';
+import { api, GOOGLE_BOOKS_API } from './authAxios';
 import { API_URL } from './authAxios';
 
 interface AuthResponse {
@@ -82,3 +81,17 @@ export const editProfile = async (id: string, profile: FormData): Promise<UserPr
     throw err;
   }
 };
+
+export async function getBookById(id: string) {
+  try {
+    const res = await api.get(`${GOOGLE_BOOKS_API}/${id}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function searchBooks(query: string) {
+  const res = await api.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
+  return res.data.items || [];
+}

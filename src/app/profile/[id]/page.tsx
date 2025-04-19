@@ -31,20 +31,20 @@ export default async function Profile({ params }: ProfilePageParams) {
       <div className="profile-bio">
         <p className="bio-text">{user.description}</p>
         <Link href="/profile/edit" className="edit-bio-btn">
-          Редактировать профиль
+          Edit profile
         </Link>
       </div>
 
       <div className="profile-actions">
-        <button className="add-book-btn">
-          <span className="add-icon">+</span> Добавить книгу
-        </button>
+        <Link href="/books" className="add-book-btn">
+          <span className="add-icon">+</span> Add book
+        </Link>
       </div>
 
       <div className="user-books">
-        <h3 className="section-title">Мои книги</h3>
+        <h3 className="section-title">My books</h3>
         <div className="books-list">
-          <p className="empty-message">У вас пока нет добавленных книг</p>
+          <p className="empty-message">You don't have any books added yet</p>
         </div>
       </div>
     </div>
