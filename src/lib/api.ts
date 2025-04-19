@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { api, GOOGLE_BOOKS_API } from './authAxios';
 import { API_URL } from './authAxios';
 
@@ -84,7 +85,7 @@ export const editProfile = async (id: string, profile: FormData): Promise<UserPr
 
 export async function getBookById(id: string) {
   try {
-    const res = await api.get(`${GOOGLE_BOOKS_API}/${id}`);
+    const res = await axios.get(`${GOOGLE_BOOKS_API}/${id}`);
     return res.data;
   } catch (error) {
     throw error;
@@ -92,6 +93,6 @@ export async function getBookById(id: string) {
 }
 
 export async function searchBooks(query: string) {
-  const res = await api.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
+  const res = await axios.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
   return res.data.items || [];
 }

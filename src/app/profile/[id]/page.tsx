@@ -1,6 +1,7 @@
 import { getProfile, UserProfile } from '@/src/lib/api';
 import { AVATAR_URL } from '@/src/lib/authAxios';
 import { notFound } from 'next/navigation';
+import noAvatar from '@/public/noAvatar.png';
 import Link from 'next/link';
 import './style.css';
 
@@ -23,7 +24,13 @@ export default async function Profile({ params }: ProfilePageParams) {
     <div className="user-profile">
       <div className="profile-header">
         <div className="avatar-container">
-          <img src={`${AVATAR_URL}/${user.avatar}`} alt="User Avatar" className="avatar" />
+          <img
+            src={user.avatar ? `${AVATAR_URL}/${user.avatar}` : noAvatar.src}
+            alt="User Avatar"
+            className="avatar"
+            width={150}
+            height={150}
+          />
         </div>
         <h2 className="username">{user.name}</h2>
       </div>

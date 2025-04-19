@@ -17,12 +17,16 @@ interface Book {
 }
 
 export default function FindBooksPage() {
-  const [query, setQuery] = useState('');
-  const [books, setBooks] = useState<Book[]>([]);
+  const [query, setQuery] = useState(() => {
+    return sessionStorage.getItem('books_query') || '';
+  });
+  const [books, setBooks] = useState<Book[]>(() => {
+    const saved = sessionStorage.getItem('books_list');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Debounce logic
   useEffect(() => {
     if (query.trim() === '') {
       setBooks([]);
@@ -45,6 +49,8 @@ export default function FindBooksPage() {
           smallThumbnail: item.volumeInfo.imageLinks?.smallThumbnail || '',
         }));
         setBooks(mappedBooks);
+        sessionStorage.setItem('books_query', query);
+        sessionStorage.setItem('books_list', JSON.stringify(mappedBooks));
       } catch (err) {
         setBooks([]);
       } finally {
