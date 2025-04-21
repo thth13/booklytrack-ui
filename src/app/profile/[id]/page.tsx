@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation';
 import noAvatar from '@/public/noAvatar.png';
 import Link from 'next/link';
 import './style.css';
+import UserBooks from '../../../components/UserBooks';
+import { useUserProfile } from '@/src/context/UserProfileContext';
+import { cookies } from 'next/headers';
 
 interface ProfilePageParams {
   params: {
@@ -13,6 +16,12 @@ interface ProfilePageParams {
 
 export default async function Profile({ params }: ProfilePageParams) {
   const { id } = params;
+
+  // Получаем userId из cookies на сервере
+  const cookieStore = await cookies();
+  const myUserId = cookieStore.get('userId')?.value;
+
+  const isMyProfile = myUserId === id;
 
   const user = await fetchUserProfile(id);
 
@@ -35,25 +44,24 @@ export default async function Profile({ params }: ProfilePageParams) {
         <h2 className="username">{user.name}</h2>
       </div>
 
-      <div className="profile-bio">
-        <p className="bio-text">{user.description}</p>
-        <Link href="/profile/edit" className="edit-bio-btn">
-          Edit profile
-        </Link>
-      </div>
-
-      <div className="profile-actions">
-        <Link href="/books" className="add-book-btn">
-          <span className="add-icon">+</span> Add book
-        </Link>
-      </div>
-
-      <div className="user-books">
-        <h3 className="section-title">My books</h3>
-        <div className="books-list">
-          <p className="empty-message">You don't have any books added yet</p>
+      {isMyProfile && (
+        <div className="profile-bio">
+          <p className="bio-text">{user.description}</p>
+          <Link href="/profile/edit" className="edit-bio-btn">
+            Edit profile
+          </Link>
         </div>
-      </div>
+      )}
+
+      {isMyProfile && (
+        <div className="profile-actions">
+          <Link href="/books" className="add-book-btn">
+            <span className="add-icon">+</span> Add book
+          </Link>
+        </div>
+      )}
+
+      <UserBooks books={user.read} />
     </div>
   );
 }

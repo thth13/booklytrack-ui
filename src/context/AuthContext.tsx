@@ -1,12 +1,12 @@
 'use client';
-import { createContext, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginUser, registerUser } from '../lib/api';
 import { api } from '../lib/authAxios';
 
 interface AuthContextType {
-  user: object | null;
+  userId: string;
   login: (email: string, password: string) => Promise<void>;
   register: (login: string, email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -19,8 +19,15 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<object | null>(null);
+  const [userId, setUserId] = useState<string>('');
   const router = useRouter();
+
+  useEffect(() => {
+    const cookiesUserId = Cookies.get('userId');
+    if (cookiesUserId && !userId) {
+      setUserId(cookiesUserId);
+    }
+  }, [userId]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -53,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    setUser(null);
+    setUserId('');
 
     const cookiesToRemove = ['accessToken', 'refreshToken', 'userId'];
     cookiesToRemove.forEach((cookie) => Cookies.remove(cookie, { path: '/' }));
@@ -63,5 +70,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     router.push('/');
   };
 
-  return <AuthContext.Provider value={{ user, login, logout, register }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ userId, login, logout, register }}>{children}</AuthContext.Provider>;
 };

@@ -18,14 +18,29 @@ interface Book {
 
 export default function FindBooksPage() {
   const [query, setQuery] = useState(() => {
-    return sessionStorage.getItem('books_query') || '';
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('books_query') || '';
+    }
+    return '';
   });
   const [books, setBooks] = useState<Book[]>(() => {
-    const saved = sessionStorage.getItem('books_list');
-    return saved ? JSON.parse(saved) : [];
+    if (typeof window !== 'undefined') {
+      const saved = sessionStorage.getItem('books_list');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Debounce logic
+  useEffect(() => {
+    // Save to sessionStorage on change
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('books_query', query);
+      sessionStorage.setItem('books_list', JSON.stringify(books));
+    }
+  }, [query, books]);
 
   useEffect(() => {
     if (query.trim() === '') {
@@ -49,14 +64,12 @@ export default function FindBooksPage() {
           smallThumbnail: item.volumeInfo.imageLinks?.smallThumbnail || '',
         }));
         setBooks(mappedBooks);
-        sessionStorage.setItem('books_query', query);
-        sessionStorage.setItem('books_list', JSON.stringify(mappedBooks));
       } catch (err) {
         setBooks([]);
       } finally {
         setLoading(false);
       }
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [query]);

@@ -9,15 +9,22 @@ interface AuthResponse {
 }
 
 export interface UserProfile {
+  _id: string;
   name: string;
   avatar: string;
   description: string;
   views: number;
-  following: number;
-  followers: number;
-  read: number;
-  reads: number;
-  wantsToRead: number;
+  following: object[];
+  followers: object[];
+  read: object[];
+  reads: object[];
+  wantsToRead: object[];
+}
+
+export enum ReadCategory {
+  READ = 'read',
+  READS = 'reads',
+  WANT_READ = 'wantsToRead',
 }
 
 export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
@@ -82,6 +89,20 @@ export const editProfile = async (id: string, profile: FormData): Promise<UserPr
     throw err;
   }
 };
+
+export async function addBookToUserLibrary(book: any, userId: string) {
+  try {
+    const res = await api.post(`${API_URL}/profile/add-read-book`, {
+      readCategory: ReadCategory.READ,
+      userId,
+      book,
+    });
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export async function getBookById(id: string) {
   try {

@@ -51,8 +51,8 @@ export default function RegistrationForm() {
       newErrors.email = 'Пожалуйста, введите корректный email';
     }
 
-    if (formData.password.length < 6) {
-      newErrors.password = 'Пароль должен содержать минимум 6 символов';
+    if (formData.password.length < 5) {
+      newErrors.password = 'Пароль должен содержать минимум 5 символов';
     }
 
     if (formData.password !== formData.confirmPassword) {

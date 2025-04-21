@@ -1,15 +1,37 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
+import { redirect, useParams, useRouter } from 'next/navigation';
 import './style.css';
-import { getBookById } from '@/src/lib/api';
+import { addBookToUserLibrary, getBookById } from '@/src/lib/api';
+import { AuthContext } from '@/src/context/AuthContext';
 
 export default function BookPage() {
   const { id } = useParams();
   const router = useRouter();
+  const authContext = useContext(AuthContext);
+  const userId = authContext?.userId;
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const addBook = async () => {
+    if (userId) {
+      const bookForBackend = {
+        title: book.volumeInfo.title,
+        description: book.volumeInfo.description,
+        authors: book.volumeInfo.authors,
+        cover: book.volumeInfo.imageLinks.smallThumbnail,
+        googleId: book.id,
+        categories: book.volumeInfo.categories,
+        publisher: book.volumeInfo.publisher,
+        publishedDate: new Date(book.volumeInfo.publishedDate),
+      };
+
+      await addBookToUserLibrary(bookForBackend, userId);
+
+      redirect('/');
+    }
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -34,7 +56,7 @@ export default function BookPage() {
         <button className="book-page-btn" onClick={() => router.push('/books')}>
           Back
         </button>
-        <button className="book-page-btn add" onClick={() => alert('Add book!')}>
+        <button className="book-page-btn add" onClick={addBook}>
           Add book
         </button>
       </div>
