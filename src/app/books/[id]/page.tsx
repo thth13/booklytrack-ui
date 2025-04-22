@@ -5,11 +5,13 @@ import { redirect, useParams, useRouter } from 'next/navigation';
 import './style.css';
 import { addBookToUserLibrary, getBookById } from '@/src/lib/api';
 import { AuthContext } from '@/src/context/AuthContext';
+import { useUserProfile } from '@/src/context/UserProfileContext';
 
 export default function BookPage() {
   const { id } = useParams();
   const router = useRouter();
   const authContext = useContext(AuthContext);
+  const { profile } = useUserProfile();
   const userId = authContext?.userId;
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -47,6 +49,9 @@ export default function BookPage() {
 
   const info = book.volumeInfo;
 
+  // Проверка: есть ли книга у пользователя
+  const isAlreadyReading = profile?.read?.some((b: any) => b.googleId === book.id);
+
   return (
     <div className="book-page-container">
       <div className="book-page-actions">
@@ -56,9 +61,16 @@ export default function BookPage() {
         <button className="book-page-btn" onClick={() => router.push('/books')}>
           Back
         </button>
-        <button className="book-page-btn add" onClick={addBook}>
-          Add book
-        </button>
+        {!isAlreadyReading && (
+          <button className="book-page-btn add" onClick={addBook}>
+            Add book
+          </button>
+        )}
+        {isAlreadyReading && (
+          <div className="book-page-btn" style={{ background: '#e0e7ef', color: '#555', cursor: 'default' }}>
+            Вы уже читаете эту книгу
+          </div>
+        )}
       </div>
       <div className="book-details">
         {info.imageLinks?.smallThumbnail ? (

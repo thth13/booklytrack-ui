@@ -5,7 +5,6 @@ import noAvatar from '@/public/noAvatar.png';
 import Link from 'next/link';
 import './style.css';
 import UserBooks from '../../../components/UserBooks';
-import { useUserProfile } from '@/src/context/UserProfileContext';
 import { cookies } from 'next/headers';
 
 interface ProfilePageParams {
@@ -14,10 +13,11 @@ interface ProfilePageParams {
   };
 }
 
-export default async function Profile({ params }: ProfilePageParams) {
-  const { id } = params;
+export default async function Profile(props: ProfilePageParams) {
+  const { params } = props;
+  const { id } = await params;
 
-  // Получаем userId из cookies на сервере
+  // Get userId from cookies on the server
   const cookieStore = await cookies();
   const myUserId = cookieStore.get('userId')?.value;
 

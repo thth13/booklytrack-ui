@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.css';
 
 interface UserBooksProps {
   books: any[];
@@ -7,10 +8,10 @@ interface UserBooksProps {
 const UserBooks: React.FC<UserBooksProps> = ({ books }) => (
   <div className="user-books">
     <h3 className="section-title">Books</h3>
-    <div className="books-list" style={{ flexDirection: 'column', width: '100%' }}>
+    <div className="books-list">
       {Array.isArray(books) && books.length > 0 ? (
         books.map((book: any) => (
-          <div key={book.id || book.title} className="books-list-item" style={{ cursor: 'pointer' }}>
+          <div key={book.id || book.title} className="books-list-item">
             {book.cover && <img src={book.cover} alt={book.title} className="books-list-cover" />}
             <div style={{ flex: 1 }}>
               <h2 style={{ margin: 0 }}>{book.title}</h2>
@@ -31,11 +32,6 @@ const UserBooks: React.FC<UserBooksProps> = ({ books }) => (
                     : new Date(book.publishedDate).getFullYear()
                   : '—'}
               </div>
-              {/* <div style={{ marginTop: 8 }}
-                dangerouslySetInnerHTML={{
-                  __html: book.description || ''
-                }}
-              /> */}
             </div>
           </div>
         ))
