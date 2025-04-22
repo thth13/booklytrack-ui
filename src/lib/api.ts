@@ -16,15 +16,15 @@ export interface UserProfile {
   views: number;
   following: object[];
   followers: object[];
-  read: object[];
-  reads: object[];
+  reading: object[];
+  finished: object[];
   wantsToRead: object[];
 }
 
 export enum ReadCategory {
-  READ = 'read',
-  READS = 'reads',
-  WANT_READ = 'wantsToRead',
+  READING = 'reading',
+  FINISHED = 'finished',
+  WANTS_READ = 'wantsToRead',
 }
 
 export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
@@ -93,7 +93,7 @@ export const editProfile = async (id: string, profile: FormData): Promise<UserPr
 export async function addBookToUserLibrary(book: any, userId: string) {
   try {
     const res = await api.post(`${API_URL}/profile/add-read-book`, {
-      readCategory: ReadCategory.READ,
+      readCategory: ReadCategory.READING,
       userId,
       book,
     });
@@ -116,4 +116,14 @@ export async function getBookById(id: string) {
 export async function searchBooks(query: string) {
   const res = await axios.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
   return res.data.items || [];
+}
+
+export async function getReadBooks(userId: string, readCategory: ReadCategory) {
+  try {
+    const res = await api.get(`${API_URL}/profile/get-read-books/${userId}/${readCategory}`);
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 }

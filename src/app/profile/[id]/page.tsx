@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import noAvatar from '@/public/noAvatar.png';
 import Link from 'next/link';
 import './style.css';
-import UserBooks from '../../../components/UserBooks';
 import { cookies } from 'next/headers';
 
 interface ProfilePageParams {
@@ -61,7 +60,20 @@ export default async function Profile(props: ProfilePageParams) {
         </div>
       )}
 
-      <UserBooks books={user.read} />
+      <div className="profile-stats-wide">
+        <Link href={`/profile/${id}/reading`} className="profile-stat-block-link">
+          <span className="profile-stat-title">Reading</span>
+          <span className="profile-stat-value">{user.reading?.length ?? 0}</span>
+        </Link>
+        <Link href={`/profile/${id}/finished`} className="profile-stat-block-link">
+          <span className="profile-stat-title">Finished</span>
+          <span className="profile-stat-value">{user.finished?.length ?? 0}</span>
+        </Link>
+        <Link href={`/profile/${id}/wants-to-read`} className="profile-stat-block-link">
+          <span className="profile-stat-title">Wants to read</span>
+          <span className="profile-stat-value">{user.wantsToRead?.length ?? 0}</span>
+        </Link>
+      </div>
     </div>
   );
 }
