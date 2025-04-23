@@ -97,7 +97,7 @@ export async function getBookById(id: string) {
 
 export async function searchBooks(query: string) {
   const res = await axios.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
-  console.log(res.data.items);
+
   return res.data.items || [];
 }
 

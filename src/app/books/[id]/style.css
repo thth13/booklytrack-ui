@@ -84,3 +84,10 @@
   line-height: 1.6;
   font-size: 1.08rem;
 }
+
+.book-page-category-select {
+  background: #e0e7ef;
+  color: #555;
+  cursor: pointer;
+  min-width: 180px;
+}

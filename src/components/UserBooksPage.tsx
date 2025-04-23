@@ -1,6 +1,6 @@
 import { getReadBooks } from '@/src/lib/api';
 import Link from 'next/link';
-import UserBooks from '@/src/components/BooksList';
+import BooksList from '@/src/components/BooksList';
 import './style.css';
 import { Book, ReadCategory } from '../types';
 
@@ -20,7 +20,7 @@ export default async function UserBooksPage({ userId, category, title, emptyMess
         ← Назад
       </Link>
       <h1 className="reading-title">{title}</h1>
-      {!books || books.length === 0 ? <div className="empty-message">{emptyMessage}</div> : <UserBooks books={books} />}
+      {!books || books.length === 0 ? <div className="empty-message">{emptyMessage}</div> : <BooksList books={books} />}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import './style.css';
 import { addBookToUserLibrary, getBookById } from '@/src/lib/api';
 import { AuthContext } from '@/src/context/AuthContext';
 import { useUserProfile } from '@/src/context/UserProfileContext';
+import { ReadCategory } from '@/src/types';
 
 export default function BookPage() {
   const { id } = useParams();
@@ -49,9 +50,17 @@ export default function BookPage() {
 
   const info = book.volumeInfo;
 
-  // Проверка: есть ли книга у пользователя
-  // TODO: проверять динамически reading и readed, а не hardcoded
-  const isAlreadyReading = profile?.reading?.some((b: any) => b.googleId === book.id);
+  function getUserBookCategory(profile: any, bookId: string) {
+    const categories = [ReadCategory.READING, ReadCategory.FINISHED, ReadCategory.WANTS_READ];
+    for (const category of categories) {
+      if (profile?.[category] && profile[category].some((id: string) => id === bookId)) {
+        return category;
+      }
+    }
+    return null;
+  }
+
+  const currentCategory = getUserBookCategory(profile, book.id);
 
   return (
     <div className="book-page-container">
@@ -62,15 +71,17 @@ export default function BookPage() {
         <button className="book-page-btn" onClick={() => router.push('/books')}>
           Back
         </button>
-        {!isAlreadyReading && (
+        {!currentCategory && (
           <button className="book-page-btn add" onClick={addBook}>
             Add book
           </button>
         )}
-        {isAlreadyReading && (
-          <div className="book-page-btn" style={{ background: '#e0e7ef', color: '#555', cursor: 'default' }}>
-            Вы уже читаете эту книгу
-          </div>
+        {currentCategory && (
+          <select className="book-page-btn book-page-category-select" value={currentCategory}>
+            <option value={ReadCategory.READING}>Reading</option>
+            <option value={ReadCategory.FINISHED}>Finished</option>
+            <option value={ReadCategory.WANTS_READ}>Wants to read</option>
+          </select>
         )}
       </div>
       <div className="book-details">
