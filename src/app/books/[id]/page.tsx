@@ -39,7 +39,7 @@ export default function BookPage() {
   };
 
   const handleCategoryChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newCategory = e.target.value as ReadCategory;
+    const newCategory = (e.target.value as ReadCategory) || null;
 
     if (userId && currentCategory) {
       await addBookToUserLibrary(book, userId, newCategory, currentCategory);
@@ -89,6 +89,7 @@ export default function BookPage() {
             <option value={ReadCategory.READING}>Reading</option>
             <option value={ReadCategory.FINISHED}>Finished</option>
             <option value={ReadCategory.WANTS_READ}>Wants to read</option>
+            <option value="">Delete from library</option>
           </select>
         )}
       </div>
