@@ -7,6 +7,7 @@ import { addBookToUserLibrary, getBookById } from '@/src/lib/api';
 import { AuthContext } from '@/src/context/AuthContext';
 import { useUserProfile } from '@/src/context/UserProfileContext';
 import { ReadCategory } from '@/src/types';
+import { getUserBookCategory } from '@/src/lib/utils';
 
 export default function BookPage() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ export default function BookPage() {
   const userId = authContext?.userId;
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currentCategory, setCurrentCategory] = useState<ReadCategory | null>(null);
 
   const addBook = async () => {
     if (userId) {
@@ -30,9 +32,18 @@ export default function BookPage() {
         publishedDate: new Date(book.volumeInfo.publishedDate),
       };
 
-      await addBookToUserLibrary(bookForBackend, userId);
+      await addBookToUserLibrary(bookForBackend, userId, ReadCategory.READING);
 
       redirect('/');
+    }
+  };
+
+  const handleCategoryChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCategory = e.target.value as ReadCategory;
+
+    if (userId && currentCategory) {
+      await addBookToUserLibrary(book, userId, newCategory, currentCategory);
+      setCurrentCategory(newCategory);
     }
   };
 
@@ -45,22 +56,15 @@ export default function BookPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  useEffect(() => {
+    if (!book || !profile) return;
+    setCurrentCategory(getUserBookCategory(profile, book.id));
+  }, [book, profile]);
+
   if (loading) return <div className="book-page-container">Loading...</div>;
   if (!book) return <div className="book-page-container">Book not found</div>;
 
   const info = book.volumeInfo;
-
-  function getUserBookCategory(profile: any, bookId: string) {
-    const categories = [ReadCategory.READING, ReadCategory.FINISHED, ReadCategory.WANTS_READ];
-    for (const category of categories) {
-      if (profile?.[category] && profile[category].some((id: string) => id === bookId)) {
-        return category;
-      }
-    }
-    return null;
-  }
-
-  const currentCategory = getUserBookCategory(profile, book.id);
 
   return (
     <div className="book-page-container">
@@ -77,7 +81,11 @@ export default function BookPage() {
           </button>
         )}
         {currentCategory && (
-          <select className="book-page-btn book-page-category-select" value={currentCategory}>
+          <select
+            className="book-page-btn book-page-category-select"
+            value={currentCategory}
+            onChange={handleCategoryChange}
+          >
             <option value={ReadCategory.READING}>Reading</option>
             <option value={ReadCategory.FINISHED}>Finished</option>
             <option value={ReadCategory.WANTS_READ}>Wants to read</option>

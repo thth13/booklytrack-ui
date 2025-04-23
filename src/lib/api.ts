@@ -72,12 +72,18 @@ export const editProfile = async (id: string, profile: FormData): Promise<UserPr
   }
 };
 
-export async function addBookToUserLibrary(book: any, userId: string) {
+export async function addBookToUserLibrary(
+  book: any,
+  userId: string,
+  readCategory: ReadCategory,
+  oldCategory?: ReadCategory,
+) {
   try {
     const res = await api.post(`${API_URL}/profile/add-read-book`, {
-      readCategory: ReadCategory.READING,
+      readCategory,
       userId,
       book,
+      oldCategory,
     });
 
     return res.data;
@@ -88,7 +94,7 @@ export async function addBookToUserLibrary(book: any, userId: string) {
 
 export async function getBookById(id: string) {
   try {
-    const res = await axios.get(`${GOOGLE_BOOKS_API}/${id}`);
+    const res = await axios.get(`${GOOGLE_BOOKS_API}/${id}/?key=AIzaSyC9nLTd3paExG1qsub80hlslKc3aydWJhw`);
     return res.data;
   } catch (error) {
     throw error;
@@ -96,7 +102,9 @@ export async function getBookById(id: string) {
 }
 
 export async function searchBooks(query: string) {
-  const res = await axios.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
+  const res = await axios.get(
+    `${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}&key=AIzaSyC9nLTd3paExG1qsub80hlslKc3aydWJhw`,
+  );
 
   return res.data.items || [];
 }
