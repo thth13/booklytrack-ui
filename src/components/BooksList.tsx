@@ -1,18 +1,19 @@
 import React from 'react';
 import './style.css';
+import { Book } from '../types';
 
-interface UserBooksProps {
-  books: any[];
+interface BooksListProps {
+  books: Book[];
 }
 
-const UserBooks: React.FC<UserBooksProps> = ({ books }) => (
-  <div className="user-books">
-    <h3 className="section-title">Books</h3>
-    <div className="books-list">
+const BooksList: React.FC<BooksListProps> = ({ books }) => (
+  <div className="book-list-container">
+    <h3 className="book-list-title">Books</h3>
+    <div className="book-list">
       {Array.isArray(books) && books.length > 0 ? (
         books.map((book: any) => (
-          <div key={book.id || book.title} className="books-list-item">
-            {book.cover && <img src={book.cover} alt={book.title} className="books-list-cover" />}
+          <div key={book.id || book.title} className="book-list-item">
+            {book.smallThumbnail && <img src={book.smallThumbnail} alt={book.title} className="book-list-cover" />}
             <div style={{ flex: 1 }}>
               <h2 style={{ margin: 0 }}>{book.title}</h2>
               {book.subtitle && (
@@ -36,10 +37,10 @@ const UserBooks: React.FC<UserBooksProps> = ({ books }) => (
           </div>
         ))
       ) : (
-        <p className="empty-message">You don't have any books added yet</p>
+        <p className="book-list-empty-message">You don't have any books added yet</p>
       )}
     </div>
   </div>
 );
 
-export default UserBooks;
+export default BooksList;

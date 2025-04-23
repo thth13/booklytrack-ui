@@ -50,7 +50,8 @@ export default function BookPage() {
   const info = book.volumeInfo;
 
   // Проверка: есть ли книга у пользователя
-  const isAlreadyReading = profile?.read?.some((b: any) => b.googleId === book.id);
+  // TODO: проверять динамически reading и readed, а не hardcoded
+  const isAlreadyReading = profile?.reading?.some((b: any) => b.googleId === book.id);
 
   return (
     <div className="book-page-container">

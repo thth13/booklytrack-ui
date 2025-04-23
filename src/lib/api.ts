@@ -1,30 +1,12 @@
 import axios from 'axios';
 import { api, GOOGLE_BOOKS_API } from './authAxios';
 import { API_URL } from './authAxios';
+import { ReadCategory, UserProfile } from '../types';
 
 interface AuthResponse {
   accessToken: string;
   refreshToken: string;
   id: string;
-}
-
-export interface UserProfile {
-  _id: string;
-  name: string;
-  avatar: string;
-  description: string;
-  views: number;
-  following: object[];
-  followers: object[];
-  reading: object[];
-  finished: object[];
-  wantsToRead: object[];
-}
-
-export enum ReadCategory {
-  READING = 'reading',
-  FINISHED = 'finished',
-  WANTS_READ = 'wantsToRead',
 }
 
 export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
@@ -115,6 +97,7 @@ export async function getBookById(id: string) {
 
 export async function searchBooks(query: string) {
   const res = await axios.get(`${GOOGLE_BOOKS_API}?q=${encodeURIComponent(query)}`);
+  console.log(res.data.items);
   return res.data.items || [];
 }
 

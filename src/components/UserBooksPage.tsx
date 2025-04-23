@@ -1,16 +1,8 @@
-import { getReadBooks, ReadCategory } from '@/src/lib/api';
+import { getReadBooks } from '@/src/lib/api';
 import Link from 'next/link';
 import UserBooks from '@/src/components/BooksList';
 import './style.css';
-
-interface Book {
-  id: string;
-  title: string;
-  authors?: string[];
-  cover?: string;
-  publisher?: string;
-  publishedDate?: string;
-}
+import { Book, ReadCategory } from '../types';
 
 interface UserBooksPageProps {
   userId: string;

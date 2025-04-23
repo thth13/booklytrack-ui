@@ -1,5 +1,5 @@
-import { ReadCategory } from '@/src/lib/api';
 import UserBooksPage from '@/src/components/UserBooksPage';
+import { ReadCategory } from '@/src/types';
 
 interface WantsToReadPageProps {
   params: {

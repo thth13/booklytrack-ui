@@ -4,17 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './style.css';
 import { searchBooks } from '@/src/lib/api';
-
-interface Book {
-  id: string;
-  title: string;
-  subtitle: string;
-  authors: string[];
-  publisher: string;
-  publishedDate: string;
-  description: string;
-  smallThumbnail?: string;
-}
+import BooksList from '@/src/components/BooksList';
+import { Book } from '@/src/types';
 
 export default function FindBooksPage() {
   const [query, setQuery] = useState(() => {
@@ -96,27 +87,7 @@ export default function FindBooksPage() {
       <div>
         {loading && <div>Loading...</div>}
         {!loading && books.length === 0 && query && <div style={{ color: '#888' }}>Books not found</div>}
-        {books.map((book) => (
-          <div key={book.id} onClick={() => router.push(`/books/${book.id}`)} className="books-list-item">
-            {book.smallThumbnail && <img src={book.smallThumbnail} alt={book.title} className="books-list-cover" />}
-            <div style={{ flex: 1 }}>
-              <h2 style={{ margin: 0 }}>{book.title}</h2>
-              {book.subtitle && (
-                <div style={{ fontStyle: 'italic', color: '#555', marginBottom: 4 }}>{book.subtitle}</div>
-              )}
-              <div>
-                <strong>Authors:</strong> {book.authors.join(', ')}
-              </div>
-              <div>
-                <strong>Publisher:</strong> {book.publisher}
-              </div>
-              <div>
-                <strong>Year:</strong> {book.publishedDate}
-              </div>
-              <div style={{ marginTop: 8 }}>{book.description}</div>
-            </div>
-          </div>
-        ))}
+        <BooksList books={books} />
       </div>
     </div>
   );
