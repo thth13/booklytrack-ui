@@ -27,3 +27,8 @@ export enum ReadCategory {
   FINISHED = 'finished',
   WANTS_READ = 'wantsToRead',
 }
+
+export enum BookEntryActionType {
+  SUMMARY = 'summary',
+  QUOTES = 'quotes',
+}
