@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { addBookSummmary, getBookSummary } from '../lib/api';
+import { addBookSummmary, getBookSummary, removeSummaryItem } from '../lib/api';
 import ReactQuill from 'react-quill-new';
+import './style.css';
 
 interface BookTabsPanelProps {
   book: any;
@@ -11,12 +12,19 @@ interface BookTabsPanelProps {
 
 export default function BookTabsPanel({ book, profile, setBook, setLoading }: BookTabsPanelProps) {
   const [activeTab, setActiveTab] = useState<'summary' | 'review' | 'quotes'>('summary');
-  const [summary, setSummary] = useState<string>('');
+  const [summary, setSummary] = useState<string[]>([]);
   const [summaryField, setSummaryField] = useState<string>('');
 
   const addSummary = async (e: any) => {
     e.preventDefault();
     addBookSummmary(profile.user, book.id, summaryField);
+  };
+
+  const handleDeleteSummary = async (indexToDelete: number) => {
+    if (summary) {
+      await removeSummaryItem(profile.user, book.id, indexToDelete);
+      setSummary(summary.filter((_, idx) => idx !== indexToDelete));
+    }
   };
 
   useEffect(() => {
@@ -53,7 +61,12 @@ export default function BookTabsPanel({ book, profile, setBook, setLoading }: Bo
                 {Array.isArray(summary) ? (
                   <div className="summary-cards">
                     {summary.map((item, index) => (
-                      <div className="summary-card" key={index} dangerouslySetInnerHTML={{ __html: item }} />
+                      <div className="summary-card" key={index}>
+                        <span className="summary-delete-btn" onClick={() => handleDeleteSummary(index)} title="Удалить">
+                          ×
+                        </span>
+                        <div dangerouslySetInnerHTML={{ __html: item }} />
+                      </div>
                     ))}
                   </div>
                 ) : (
