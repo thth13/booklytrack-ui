@@ -1,76 +1,7 @@
 import axios from 'axios';
-import { api, GOOGLE_BOOKS_API } from './authAxios';
-import { API_URL } from './authAxios';
-import { BookEntryActionType, ReadCategory, UserProfile } from '../types';
-
-interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  id: string;
-}
-
-export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
-  try {
-    const res = await api.post(`${API_URL}/user/login`, {
-      email,
-      password,
-    });
-
-    return res.data;
-  } catch (err: any) {
-    throw err;
-  }
-};
-
-export const getProfile = async (id: string): Promise<UserProfile> => {
-  try {
-    const res = await api.get(`${API_URL}/profile/${id}`);
-
-    return res.data;
-  } catch (err: any) {
-    throw err;
-  }
-};
-
-export const refreshAccessToken = async (refreshToken: string): Promise<AuthResponse> => {
-  try {
-    const res = await api.post(`${API_URL}/user/refresh-access-token'`, {
-      refreshToken,
-    });
-
-    return res.data;
-  } catch (err: any) {
-    throw err;
-  }
-};
-
-export const registerUser = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-  try {
-    const res = await api.post(`${API_URL}/user/register`, {
-      name,
-      email,
-      password,
-    });
-
-    return res.data;
-  } catch (err: any) {
-    throw err;
-  }
-};
-
-export const editProfile = async (id: string, profile: FormData): Promise<UserProfile> => {
-  try {
-    const res = await api.put(`${API_URL}/profile/${id}`, profile, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    return res.data;
-  } catch (err: any) {
-    throw err;
-  }
-};
+import { api, GOOGLE_BOOKS_API } from '../authAxios';
+import { API_URL } from '../authAxios';
+import { BookEntryActionType, ReadCategory } from '../../types';
 
 export async function addBookToUserLibrary(
   book: any,

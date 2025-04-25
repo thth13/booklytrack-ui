@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
-import { refreshAccessToken } from './api';
+import { refreshAccessToken } from './api/auth';
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 export const AVATAR_URL = process.env.NEXT_AVATAR_URL || 'http://localhost:8000/avatar';

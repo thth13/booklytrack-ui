@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getProfile, UserProfile } from '@/src/lib/api';
+import { getProfile } from '@/src/lib/api';
 import Cookies from 'js-cookie';
+import { UserProfile } from '../types';
 
 interface UserProfileContextType {
   profile: UserProfile | null;
