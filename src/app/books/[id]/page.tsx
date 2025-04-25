@@ -40,8 +40,8 @@ export default function BookPage() {
         <button className="book-page-btn" onClick={() => router.back()}>
           <span className="material-icons">back</span>
         </button>
+        <BookCategory book={book} profile={profile} />
       </div>
-      <BookCategory book={book} profile={profile} />
       <div className="book-main-content new-main-content">
         <BookInfoPanel info={info} />
         <BookTabsPanel book={book} profile={profile} setBook={setBook} setLoading={setLoading} />

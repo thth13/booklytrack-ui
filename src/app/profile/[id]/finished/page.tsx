@@ -7,13 +7,10 @@ interface FinishedPageProps {
   };
 }
 
-export default function FinishedPage({ params }: FinishedPageProps) {
+export default async function FinishedPage({ params }: FinishedPageProps) {
+  const { id } = await params;
+
   return (
-    <UserBooksPage
-      userId={params.id}
-      category={ReadCategory.FINISHED}
-      title="Finished"
-      emptyMessage="No finished books"
-    />
+    <UserBooksPage userId={id} category={ReadCategory.FINISHED} title="Finished" emptyMessage="No finished books" />
   );
 }

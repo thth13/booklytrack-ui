@@ -7,10 +7,12 @@ interface ReadingPageProps {
   };
 }
 
-export default function ReadingPage({ params }: ReadingPageProps) {
+export default async function ReadingPage({ params }: ReadingPageProps) {
+  const { id } = await params;
+
   return (
     <UserBooksPage
-      userId={params.id}
+      userId={id}
       category={ReadCategory.READING}
       title="Currently Reading"
       emptyMessage="No books in progress"

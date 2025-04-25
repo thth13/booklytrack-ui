@@ -7,10 +7,12 @@ interface WantsToReadPageProps {
   };
 }
 
-export default function WantsToReadPage({ params }: WantsToReadPageProps) {
+export default async function WantsToReadPage({ params }: WantsToReadPageProps) {
+  const { id } = await params;
+
   return (
     <UserBooksPage
-      userId={params.id}
+      userId={id}
       category={ReadCategory.WANTS_READ}
       title="Want to Read"
       emptyMessage='No books in "Want to Read" list'
