@@ -1,10 +1,11 @@
-import { getProfile, UserProfile } from '@/src/lib/api';
+import { getProfile } from '@/src/lib/api';
 import { AVATAR_URL } from '@/src/lib/authAxios';
 import { notFound } from 'next/navigation';
 import noAvatar from '@/public/noAvatar.png';
 import Link from 'next/link';
 import './style.css';
 import { cookies } from 'next/headers';
+import { UserProfile } from '@/src/types';
 
 interface ProfilePageParams {
   params: {

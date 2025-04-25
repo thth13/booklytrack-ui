@@ -11,7 +11,7 @@ interface UserBooksPageProps {
   emptyMessage: string;
 }
 
-export default async function UserBooksPage({ userId, category, title, emptyMessage }: UserBooksPageProps) {
+export default async function ({ userId, category, title, emptyMessage }: UserBooksPageProps) {
   const books = await fetchBooks(userId, category);
 
   return (
