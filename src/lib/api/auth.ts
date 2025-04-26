@@ -36,7 +36,7 @@ export const registerUser = async (name: string, email: string, password: string
 
 export const refreshAccessToken = async (refreshToken: string): Promise<AuthResponse> => {
   try {
-    const res = await api.post(`${API_URL}/user/refresh-access-token'`, {
+    const res = await api.post(`${API_URL}/user/refresh-access-token`, {
       refreshToken,
     });
 

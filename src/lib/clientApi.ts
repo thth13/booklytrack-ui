@@ -40,7 +40,7 @@ api.interceptors.response.use(
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
         if (typeof window !== 'undefined') {
-          window.location.href = '/login';
+          window.location.href = '/auth/login';
         }
       }
     }
