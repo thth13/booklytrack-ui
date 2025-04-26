@@ -1,9 +1,10 @@
 'use client';
+
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginUser, registerUser } from '../lib/api';
-import { api } from '../lib/authAxios';
+import { api } from '../lib/clientApi';
 
 interface AuthContextType {
   userId: string;

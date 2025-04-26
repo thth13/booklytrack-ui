@@ -1,6 +1,6 @@
-import { api } from '../authAxios';
-import { API_URL } from '../authAxios';
+import { API_URL } from '@/src/constants';
 import { UserProfile } from '../../types';
+import api from '../clientApi';
 
 export const getProfile = async (id: string): Promise<UserProfile> => {
   try {

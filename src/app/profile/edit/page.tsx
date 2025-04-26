@@ -5,7 +5,7 @@ import './style.css';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { editProfile, getProfile } from '@/src/lib/api';
-import { AVATAR_URL } from '@/src/lib/authAxios';
+import { AVATAR_URL } from '@/src/constants';
 
 export interface ProfileFormData {
   name: string;
@@ -144,11 +144,7 @@ const EditProfile = () => {
           {formData.avatar && (
             <div className="avatar-preview">
               <img
-                src={
-                  formData.avatar.startsWith('data:')
-                    ? formData.avatar
-                    : `${AVATAR_URL}/${formData.avatar}`
-                }
+                src={formData.avatar.startsWith('data:') ? formData.avatar : `${AVATAR_URL}/${formData.avatar}`}
                 alt="Avatar preview"
                 className="avatar-image"
                 onError={(e) => {

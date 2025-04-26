@@ -1,11 +1,11 @@
-import { getProfile } from '@/src/lib/api';
-import { AVATAR_URL } from '@/src/lib/authAxios';
 import { notFound } from 'next/navigation';
 import noAvatar from '@/public/noAvatar.png';
 import Link from 'next/link';
 import './style.css';
 import { cookies } from 'next/headers';
 import { UserProfile } from '@/src/types';
+import { createServerApi } from '@/src/lib/serverApi';
+import { API_URL, AVATAR_URL } from '@/src/constants';
 
 interface ProfilePageParams {
   params: {
@@ -81,7 +81,9 @@ export default async function Profile(props: ProfilePageParams) {
 
 async function fetchUserProfile(id: string): Promise<UserProfile | null> {
   try {
-    const data = await getProfile(id);
+    const api = await createServerApi();
+
+    const { data } = await api.get(`${API_URL}/profile/${id}`);
 
     return data;
   } catch (err) {

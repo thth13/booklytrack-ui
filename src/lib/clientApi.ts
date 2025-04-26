@@ -1,19 +1,18 @@
+'use client';
+
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
-import { refreshAccessToken } from './api/auth';
-
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-export const AVATAR_URL = process.env.NEXT_AVATAR_URL || 'http://localhost:8000/avatar';
-export const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
+import { refreshAccessToken } from './api';
+import { API_URL } from '../constants';
 
 export const api = axios.create({
   baseURL: API_URL,
 });
 
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
     const token = Cookies.get('accessToken');
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,6 +21,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+// Response interceptor
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
@@ -37,9 +37,8 @@ api.interceptors.response.use(
           return api.request(error.config);
         }
       } catch (refreshError) {
-        Cookies.remove('accessToken', { path: '/' });
-        Cookies.remove('refreshToken', { path: '/' });
-        // Add redirect after removing tokens
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
         if (typeof window !== 'undefined') {
           window.location.href = '/login';
         }
@@ -48,3 +47,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export default api;

@@ -1,5 +1,5 @@
-import { api } from '../authAxios';
-import { API_URL } from '../authAxios';
+import { API_URL } from '@/src/constants';
+import { api } from '../clientApi';
 
 interface AuthResponse {
   accessToken: string;
