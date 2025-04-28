@@ -1,5 +1,5 @@
 import { BookEntryActionType } from '@/src/types';
-import { api } from '../clientApi';
+import { api } from '../clientAxios';
 import { API_URL } from '@/src/constants';
 
 export async function getBookSummary(userId: string, bookId: string) {

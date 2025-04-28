@@ -1,5 +1,3 @@
-'use client';
-
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 import { refreshAccessToken } from './api';

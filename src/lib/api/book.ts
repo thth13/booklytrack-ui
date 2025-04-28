@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { api } from '../clientApi';
 import { ReadCategory } from '../../types';
 import { API_URL, GOOGLE_BOOKS_API } from '@/src/constants';
+import api from '../clientAxios';
 
 export async function addBookToUserLibrary(
   book: any,

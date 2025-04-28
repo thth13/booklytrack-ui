@@ -4,7 +4,7 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginUser, registerUser } from '../lib/api';
-import { api } from '../lib/clientApi';
+import { api } from '../lib/clientAxios';
 
 interface AuthContextType {
   userId: string;

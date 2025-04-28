@@ -4,8 +4,8 @@ import Link from 'next/link';
 import './style.css';
 import { cookies } from 'next/headers';
 import { UserProfile } from '@/src/types';
-import { createServerApi } from '@/src/lib/serverApi';
-import { API_URL, AVATAR_URL } from '@/src/constants';
+import { AVATAR_URL } from '@/src/constants';
+import { getProfile } from '@/src/lib/api';
 
 interface ProfilePageParams {
   params: {
@@ -81,9 +81,7 @@ export default async function Profile(props: ProfilePageParams) {
 
 async function fetchUserProfile(id: string): Promise<UserProfile | null> {
   try {
-    const api = await createServerApi();
-
-    const { data } = await api.get(`${API_URL}/profile/${id}`);
+    const data = await getProfile(id);
 
     return data;
   } catch (err) {
