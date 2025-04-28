@@ -1,18 +1,21 @@
+'use client';
+
 import { useContext, useEffect, useState } from 'react';
 import { ReadCategory } from '../types';
 import { AuthContext } from '../context/AuthContext';
 import { addBookToUserLibrary } from '../lib/api';
 import { redirect } from 'next/navigation';
 import { getUserBookCategory } from '../lib/utils';
+import { useUserProfile } from '../context/UserProfileContext';
 
 interface BookCategoryProps {
   book: any;
-  profile: any;
 }
 
-export default function BookCategory({ book, profile }: BookCategoryProps) {
+export default function BookCategory({ book }: BookCategoryProps) {
   const authContext = useContext(AuthContext);
   const userId = authContext?.userId;
+  const { profile } = useUserProfile();
 
   const [currentCategory, setCurrentCategory] = useState<ReadCategory | null>(null);
 

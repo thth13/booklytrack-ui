@@ -7,6 +7,7 @@ export interface Book {
   publishedDate: string;
   description: string;
   smallThumbnail?: string;
+  volumeInfo: any;
 }
 
 export interface UserProfile {
@@ -20,6 +21,7 @@ export interface UserProfile {
   reading: object[];
   finished: object[];
   wantsToRead: object[];
+  user: string;
 }
 
 export enum ReadCategory {

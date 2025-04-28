@@ -1,51 +1,52 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import './style.css';
+import React from 'react';
+import Link from 'next/link';
 import { getBookById } from '@/src/lib/api';
-import { useUserProfile } from '@/src/context/UserProfileContext';
-import 'react-quill-new/dist/quill.snow.css';
+import { Book } from '@/src/types';
 import BookTabsPanel from '@/src/components/BookTabsPanel';
 import BookInfoPanel from '@/src/components/BookInfoPanel';
 import BookCategory from '@/src/components/BookCategory';
+import 'react-quill-new/dist/quill.snow.css';
+import './style.css';
 
-export default function BookPage() {
-  const { id } = useParams();
-  const router = useRouter();
-  const { profile } = useUserProfile();
-  const [book, setBook] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+interface BookPageParams {
+  params: {
+    id: string;
+  };
+}
 
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
-    getBookById(id as string)
-      .then((data) => setBook(data))
-      .catch(() => setBook(null))
-      .finally(() => setLoading(false));
-  }, [id]);
+export default async function BookPage(props: BookPageParams) {
+  const { params } = props;
+  const { id } = await params;
 
-  if (loading) return <div className="book-page-container">Loading...</div>;
-  if (!book) return <div className="book-page-container">Book not found</div>;
+  const book = await fetchBook(id);
 
-  const info = book.volumeInfo;
+  if (!book) {
+    return <div className="book-page-container">Book not found</div>;
+  }
 
   return (
     <div className="book-page-container new-design">
       <div className="book-header">
-        <button className="book-page-btn" onClick={() => router.push('/')}>
-          <span className="material-icons">home</span>
-        </button>
-        <button className="book-page-btn" onClick={() => router.back()}>
+        <Link href="/" className="book-page-btn">
           <span className="material-icons">back</span>
-        </button>
-        <BookCategory book={book} profile={profile} />
+        </Link>
+        <BookCategory book={book} />
       </div>
       <div className="book-main-content new-main-content">
-        <BookInfoPanel info={info} />
-        <BookTabsPanel book={book} profile={profile} setBook={setBook} setLoading={setLoading} />
+        <BookInfoPanel info={book?.volumeInfo} />
+        <BookTabsPanel book={book} />
       </div>
     </div>
   );
+}
+
+async function fetchBook(id: string): Promise<Book | null> {
+  try {
+    const data = await getBookById(id);
+
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch book', err);
+    return null;
+  }
 }

@@ -1,27 +1,31 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { addBookSummmary, getBookSummary, removeSummaryItem } from '../lib/api';
 import ReactQuill from 'react-quill-new';
 import './style.css';
+import { useUserProfile } from '../context/UserProfileContext';
 
 interface BookTabsPanelProps {
   book: any;
-  profile: any;
-  setBook: any;
-  setLoading: any;
 }
 
-export default function BookTabsPanel({ book, profile, setBook, setLoading }: BookTabsPanelProps) {
+export default function BookTabsPanel({ book }: BookTabsPanelProps) {
   const [activeTab, setActiveTab] = useState<'summary' | 'review' | 'quotes'>('summary');
   const [summary, setSummary] = useState<string[]>([]);
   const [summaryField, setSummaryField] = useState<string>('');
+  const { profile } = useUserProfile();
 
   const addSummary = async (e: any) => {
     e.preventDefault();
-    addBookSummmary(profile.user, book.id, summaryField);
+
+    if (profile?.user) {
+      addBookSummmary(profile?.user, book.id, summaryField);
+    }
   };
 
   const handleDeleteSummary = async (indexToDelete: number) => {
-    if (summary) {
+    if (summary && profile?.user) {
       await removeSummaryItem(profile.user, book.id, indexToDelete);
       setSummary(summary.filter((_, idx) => idx !== indexToDelete));
     }
@@ -30,10 +34,7 @@ export default function BookTabsPanel({ book, profile, setBook, setLoading }: Bo
   useEffect(() => {
     if (!book || !profile) return;
 
-    getBookSummary(profile.user, book.id)
-      .then((data) => setSummary(data.summary))
-      .catch(() => setBook(null))
-      .finally(() => setLoading(false));
+    getBookSummary(profile.user, book.id).then((data) => setSummary(data.summary));
   }, [book, profile]);
 
   return (
