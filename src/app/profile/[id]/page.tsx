@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { UserProfile } from '@/src/types';
 import { AVATAR_URL } from '@/src/constants';
 import { getProfile } from '@/src/lib/api';
+import LogoutButton from '@/src/components/LogoutButton';
 
 interface ProfilePageParams {
   params: {
@@ -50,6 +51,7 @@ export default async function Profile(props: ProfilePageParams) {
           <Link href="/profile/edit" className="edit-bio-btn">
             Edit profile
           </Link>
+          <LogoutButton />
         </div>
       )}
 
