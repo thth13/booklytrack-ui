@@ -12,7 +12,7 @@ interface BookTabsPanelProps {
   book: any;
 }
 
-export default function BookTabsPanel({ book }: BookTabsPanelProps) {
+export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
   const [activeTab, setActiveTab] = useState<'summary' | 'review' | 'quotes'>('summary');
   const [summary, setSummary] = useState<string[]>([]);
   const [summaryField, setSummaryField] = useState<string>('');
@@ -23,7 +23,9 @@ export default function BookTabsPanel({ book }: BookTabsPanelProps) {
     e.preventDefault();
 
     if (profile?.user) {
-      addBookSummmary(profile?.user, book.id, summaryField);
+      await addBookSummmary(profile?.user, book.id, summaryField);
+      setSummary((prev) => [...prev, summaryField]);
+      setSummaryField('');
     }
   };
 

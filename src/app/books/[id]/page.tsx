@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { getBookById } from '@/src/lib/api';
 import { Book } from '@/src/types';
-import BookTabsPanel from '@/src/components/BookTabsPanel';
+import BookSummaryPanel from '@/src/components/BookSummaryPanel';
 import BookInfoPanel from '@/src/components/BookInfoPanel';
 import BookCategory from '@/src/components/BookCategory';
 import 'react-quill-new/dist/quill.snow.css';
@@ -34,7 +34,7 @@ export default async function BookPage(props: BookPageParams) {
       </div>
       <div className="book-main-content new-main-content">
         <BookInfoPanel info={book?.volumeInfo} />
-        <BookTabsPanel book={book} />
+        <BookSummaryPanel book={book} />
       </div>
     </div>
   );
