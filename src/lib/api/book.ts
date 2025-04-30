@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { ReadCategory } from '../../types';
+import { Book, ReadCategory } from '../../types';
 import { API_URL, GOOGLE_BOOKS_API } from '@/src/constants';
 import api from '../clientAxios';
 
 export async function addBookToUserLibrary(
-  book: any,
+  book: Book,
   userId: string,
   readCategory: ReadCategory,
   oldCategory?: ReadCategory,
@@ -25,7 +25,7 @@ export async function addBookToUserLibrary(
 
 export async function getBookById(id: string) {
   try {
-    const res = await axios.get(`${GOOGLE_BOOKS_API}/${id}/?key=AIzaSyC9nLTd3paExG1qsub80hlslKc3aydWJhw`);
+    const res = await api.get(`${API_URL}/book/${id}`);
 
     return res.data;
   } catch (error) {

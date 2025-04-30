@@ -6,7 +6,7 @@ export interface Book {
   publisher: string;
   publishedDate: Date;
   description: string;
-  smallThumbnail?: string;
+  cover: string;
   volumeInfo: any;
 }
 

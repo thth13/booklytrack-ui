@@ -33,7 +33,7 @@ export default async function BookPage(props: BookPageParams) {
         <BookCategory book={book} />
       </div>
       <div className="book-main-content new-main-content">
-        <BookInfoPanel info={book?.volumeInfo} />
+        <BookInfoPanel book={book} />
         <BookSummaryPanel book={book} />
       </div>
     </div>
