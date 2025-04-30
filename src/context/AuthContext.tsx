@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginUser, registerUser } from '../lib/api';
 import { api } from '../lib/clientAxios';
+import { useUserProfile } from './UserProfileContext';
 
 interface AuthContextType {
   userId: string;
@@ -22,6 +23,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userId, setUserId] = useState<string>('');
   const router = useRouter();
+  const { refreshProfile } = useUserProfile();
 
   useEffect(() => {
     const cookiesUserId = Cookies.get('userId');
@@ -56,6 +58,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     Cookies.set('accessToken', accessToken, { path: '/' });
     Cookies.set('refreshToken', refreshToken, { path: '/' });
     Cookies.set('userId', id, { path: '/' });
+
+    refreshProfile();
 
     router.push(`/profile/${id}`);
   };
