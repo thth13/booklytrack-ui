@@ -4,7 +4,7 @@ export interface Book {
   subtitle: string;
   authors: string[];
   publisher: string;
-  publishedDate: string;
+  publishedDate: Date;
   description: string;
   smallThumbnail?: string;
   volumeInfo: any;
@@ -16,11 +16,11 @@ export interface UserProfile {
   avatar: string;
   description: string;
   views: number;
-  following: object[];
-  followers: object[];
-  reading: object[];
-  finished: object[];
-  wantsToRead: object[];
+  following: string[];
+  followers: string[];
+  reading: string[];
+  finished: string[];
+  wantsToRead: string[];
   user: string;
 }
 

@@ -7,6 +7,7 @@ import './style.css';
 import { useUserProfile } from '../context/UserProfileContext';
 import { getUserBookCategory } from '../lib/utils';
 import { ReadCategory } from '../types';
+import { useBook } from '../context/BookContext';
 
 interface BookTabsPanelProps {
   book: any;
@@ -16,8 +17,8 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
   const [activeTab, setActiveTab] = useState<'summary' | 'review' | 'quotes'>('summary');
   const [summary, setSummary] = useState<string[]>([]);
   const [summaryField, setSummaryField] = useState<string>('');
-  const [isReadBook, setIsReadBook] = useState<ReadCategory | null>(null);
   const { profile } = useUserProfile();
+  const { currentCategory } = useBook();
 
   const addSummary = async (e: any) => {
     e.preventDefault();
@@ -40,13 +41,11 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
     if (!book || !profile) return;
 
     getBookSummary(profile.user, book.id).then((data) => setSummary(data.summary));
-
-    setIsReadBook(getUserBookCategory(profile, book.id));
   }, [book, profile]);
 
   return (
     profile &&
-    isReadBook && (
+    currentCategory && (
       <div className="book-tabs-panel">
         <div className="book-tabs-header">
           <button

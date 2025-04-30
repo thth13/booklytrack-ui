@@ -1,40 +1,39 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
-import { ReadCategory } from '../types';
+import { useContext, useEffect } from 'react';
+import { Book, ReadCategory } from '../types';
 import { AuthContext } from '../context/AuthContext';
-import { addBookToUserLibrary } from '../lib/api';
-import { redirect } from 'next/navigation';
 import { getUserBookCategory } from '../lib/utils';
 import { useUserProfile } from '../context/UserProfileContext';
+import { useBook } from '../context/BookContext';
 
 interface BookCategoryProps {
-  book: any;
+  book: Book;
 }
 
 export default function BookCategory({ book }: BookCategoryProps) {
   const authContext = useContext(AuthContext);
   const userId = authContext?.userId;
-  const { profile } = useUserProfile();
+  const { profile, addBookToProfile } = useUserProfile();
 
-  const [currentCategory, setCurrentCategory] = useState<ReadCategory | null>(null);
+  const { currentCategory, setCurrentCategory } = useBook();
 
-  const addBook = async () => {
+  const handleAddBook = async () => {
     if (userId) {
       const bookForBackend = {
+        id: book.id,
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
+        subtitle: book.volumeInfo.subtitle,
         authors: book.volumeInfo.authors,
         cover: book.volumeInfo.imageLinks.smallThumbnail,
-        googleId: book.id,
         categories: book.volumeInfo.categories,
         publisher: book.volumeInfo.publisher,
         publishedDate: new Date(book.volumeInfo.publishedDate),
+        volumeInfo: book.volumeInfo,
       };
 
-      await addBookToUserLibrary(bookForBackend, userId, ReadCategory.READING);
-
-      redirect('/');
+      addBookToProfile(bookForBackend, userId, ReadCategory.READING);
     }
   };
 
@@ -42,8 +41,7 @@ export default function BookCategory({ book }: BookCategoryProps) {
     const newCategory = (e.target.value as ReadCategory) || null;
 
     if (userId && currentCategory) {
-      await addBookToUserLibrary(book, userId, newCategory, currentCategory);
-      setCurrentCategory(newCategory);
+      addBookToProfile(book, userId, newCategory, currentCategory);
     }
   };
 
@@ -55,7 +53,7 @@ export default function BookCategory({ book }: BookCategoryProps) {
   return (
     <>
       {!currentCategory && (
-        <button className="book-page-btn add" onClick={addBook}>
+        <button className="book-page-btn add" onClick={handleAddBook}>
           Add book
         </button>
       )}
