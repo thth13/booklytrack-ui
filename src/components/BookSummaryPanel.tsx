@@ -39,7 +39,19 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
   useEffect(() => {
     if (!book || !profile) return;
 
-    getBookSummary(profile.user, book._id).then((data) => setSummary(data.summary));
+    const fetchBookSummary = async () => {
+      try {
+        const data = await getBookSummary(profile.user, book._id);
+
+        if (data) {
+          setSummary(data.summary);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchBookSummary();
   }, [book, profile]);
 
   return (

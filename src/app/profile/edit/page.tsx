@@ -86,7 +86,6 @@ const EditProfile = () => {
           description: profile.description,
           avatar: profile.avatar,
         });
-        console.log(profile);
       } catch (error) {
         console.error('Error fetching profile:', error);
       }
