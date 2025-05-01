@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
-import { addBookSummmary, getBookSummary, removeSummaryItem } from '../lib/api';
+import { addBookSummmary, getBookSummary, removeSummaryItem, updateSummaryItem } from '../lib/api';
 import { useUserProfile } from '../context/UserProfileContext';
 import { useBook } from '../context/BookContext';
 import { Book } from '../types';
+import SummaryCard from './SummaryCard';
 import './style.css';
 
 interface BookTabsPanelProps {
@@ -33,6 +34,13 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
     if (summary && profile?.user) {
       await removeSummaryItem(profile.user, book._id, indexToDelete);
       setSummary(summary.filter((_, idx) => idx !== indexToDelete));
+    }
+  };
+
+  const handleEditSummary = async (indexToEdit: number, newValue: string) => {
+    if (summary && profile?.user) {
+      await updateSummaryItem(profile.user, book._id, indexToEdit, newValue);
+      setSummary((prev) => prev.map((item, idx) => (idx === indexToEdit ? newValue : item)));
     }
   };
 
@@ -78,24 +86,16 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
               <div className="summary-view">
                 <strong>Summary:</strong>
                 <div className="summary-content">
-                  {Array.isArray(summary) ? (
-                    <div className="summary-cards">
-                      {summary.map((item, index) => (
-                        <div className="summary-card" key={index}>
-                          <span
-                            className="summary-delete-btn"
-                            onClick={() => handleDeleteSummary(index)}
-                            title="Удалить"
-                          >
-                            ×
-                          </span>
-                          <div dangerouslySetInnerHTML={{ __html: item }} />
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>{summary || 'No summary yet.'}</p>
-                  )}
+                  <div className="summary-cards">
+                    {summary.map((item, index) => (
+                      <SummaryCard
+                        key={index}
+                        item={item}
+                        onEdit={(newValue) => handleEditSummary(index, newValue)}
+                        onDelete={() => handleDeleteSummary(index)}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="summary-editor">

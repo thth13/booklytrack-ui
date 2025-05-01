@@ -27,6 +27,17 @@ export async function addBookSummmary(userId: string, bookId: string, summary: s
   }
 }
 
+export async function updateSummaryItem(userId: string, bookId: string, summaryIndex: number, summary: string) {
+  try {
+    const res = await api.put(`${API_URL}/book-summary/${userId}/${bookId}/${summaryIndex}`, {
+      newValue: summary,
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function removeSummaryItem(userId: string, bookId: string, summaryIndex: number) {
   try {
     const res = await api.delete(`${API_URL}/book-summary/${userId}/${bookId}/${summaryIndex}`);
