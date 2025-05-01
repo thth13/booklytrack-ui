@@ -45,14 +45,14 @@ export default function FindBooksPage() {
       try {
         const items = await searchBooks(query);
         const mappedBooks: Book[] = items.map((item: any) => ({
-          id: item.id || '',
+          googleId: item.id || '',
           title: item.volumeInfo.title || '',
           subtitle: item.volumeInfo.subtitle || '',
           authors: item.volumeInfo.authors || [],
           publisher: item.volumeInfo.publisher || '',
           publishedDate: item.volumeInfo.publishedDate || '',
           description: item.volumeInfo.description || '',
-          smallThumbnail: item.volumeInfo.imageLinks?.smallThumbnail || '',
+          imageLinks: item.volumeInfo.imageLinks || '',
         }));
         setBooks(mappedBooks);
       } catch (err) {

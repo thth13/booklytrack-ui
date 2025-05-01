@@ -1,16 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { addBookSummmary, getBookSummary, removeSummaryItem } from '../lib/api';
 import ReactQuill from 'react-quill-new';
-import './style.css';
+import { addBookSummmary, getBookSummary, removeSummaryItem } from '../lib/api';
 import { useUserProfile } from '../context/UserProfileContext';
-import { getUserBookCategory } from '../lib/utils';
-import { ReadCategory } from '../types';
 import { useBook } from '../context/BookContext';
+import { Book } from '../types';
+import './style.css';
 
 interface BookTabsPanelProps {
-  book: any;
+  book: Book;
 }
 
 export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
@@ -24,7 +23,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
     e.preventDefault();
 
     if (profile?.user) {
-      await addBookSummmary(profile?.user, book.id, summaryField);
+      await addBookSummmary(profile?.user, book._id, summaryField);
       setSummary((prev) => [...prev, summaryField]);
       setSummaryField('');
     }
@@ -32,7 +31,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
 
   const handleDeleteSummary = async (indexToDelete: number) => {
     if (summary && profile?.user) {
-      await removeSummaryItem(profile.user, book.id, indexToDelete);
+      await removeSummaryItem(profile.user, book._id, indexToDelete);
       setSummary(summary.filter((_, idx) => idx !== indexToDelete));
     }
   };
@@ -40,7 +39,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
   useEffect(() => {
     if (!book || !profile) return;
 
-    getBookSummary(profile.user, book.id).then((data) => setSummary(data.summary));
+    getBookSummary(profile.user, book._id).then((data) => setSummary(data.summary));
   }, [book, profile]);
 
   return (

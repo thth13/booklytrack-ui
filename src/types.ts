@@ -1,13 +1,22 @@
+export interface ImageLinks {
+  smallThumbnail?: string;
+  thumbnail?: string;
+  small?: string;
+  medium?: string;
+  large?: string;
+  extraLarge?: string;
+}
+
 export interface Book {
-  id: string;
+  _id: string;
+  googleId: string;
   title: string;
-  subtitle: string;
+  description: string;
   authors: string[];
+  imageLinks: ImageLinks;
+  categories: string[];
   publisher: string;
   publishedDate: Date;
-  description: string;
-  cover: string;
-  volumeInfo: any;
 }
 
 export interface UserProfile {

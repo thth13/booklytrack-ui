@@ -9,13 +9,13 @@ import { useBook } from './BookContext';
 interface UserProfileContextType {
   profile: UserProfile | null;
   refreshProfile: () => Promise<void>;
-  addBookToProfile: (book: Book, userId: string, newCategory: ReadCategory, currentCategory?: ReadCategory) => void;
+  addBookToProfile: (bookId: string, userId: string, newCategory: ReadCategory, currentCategory?: ReadCategory) => void;
 }
 
 export const UserProfileContext = createContext<UserProfileContextType>({
   profile: null,
   refreshProfile: async () => {},
-  addBookToProfile: (book: Book, userId: string, newCategory: ReadCategory, currentCategory?: ReadCategory) => {},
+  addBookToProfile: () => {},
 });
 
 export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -32,12 +32,12 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const addBookToProfile = async (
-    book: Book,
+    bookId: string,
     userId: string,
     newCategory: ReadCategory,
     currentCategory?: ReadCategory,
   ) => {
-    const data = await addBookToUserLibrary(book, userId, newCategory, currentCategory);
+    const data = await addBookToUserLibrary(bookId, userId, newCategory, currentCategory);
 
     setCurrentCategory(newCategory);
     setProfile(data);

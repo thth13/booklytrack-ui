@@ -40,13 +40,13 @@ export default async function BookPage(props: BookPageParams) {
   );
 }
 
-async function fetchBook(id: string): Promise<Book | null> {
+async function fetchBook(id: string): Promise<Book> {
   try {
     const data = await getBookById(id);
 
     return data;
   } catch (err) {
     console.error('Failed to fetch book', err);
-    return null;
+    throw err;
   }
 }

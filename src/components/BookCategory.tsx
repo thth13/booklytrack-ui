@@ -20,20 +20,7 @@ export default function BookCategory({ book }: BookCategoryProps) {
 
   const handleAddBook = async () => {
     if (userId) {
-      const bookForBackend = {
-        id: book.id,
-        title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
-        subtitle: book.volumeInfo.subtitle,
-        authors: book.volumeInfo.authors,
-        cover: book.volumeInfo.imageLinks.smallThumbnail,
-        categories: book.volumeInfo.categories,
-        publisher: book.volumeInfo.publisher,
-        publishedDate: new Date(book.volumeInfo.publishedDate),
-        volumeInfo: book.volumeInfo,
-      };
-
-      addBookToProfile(bookForBackend, userId, ReadCategory.READING);
+      addBookToProfile(book._id, userId, ReadCategory.READING);
     }
   };
 
@@ -41,13 +28,13 @@ export default function BookCategory({ book }: BookCategoryProps) {
     const newCategory = (e.target.value as ReadCategory) || null;
 
     if (userId && currentCategory) {
-      addBookToProfile(book, userId, newCategory, currentCategory);
+      addBookToProfile(book._id, userId, newCategory, currentCategory);
     }
   };
 
   useEffect(() => {
     if (!book || !profile) return;
-    setCurrentCategory(getUserBookCategory(profile, book.id));
+    setCurrentCategory(getUserBookCategory(profile, book._id));
   }, [book, profile]);
 
   return (

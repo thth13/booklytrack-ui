@@ -4,7 +4,7 @@ import { API_URL, GOOGLE_BOOKS_API } from '@/src/constants';
 import api from '../clientAxios';
 
 export async function addBookToUserLibrary(
-  book: Book,
+  bookId: string,
   userId: string,
   readCategory: ReadCategory,
   oldCategory?: ReadCategory,
@@ -13,7 +13,7 @@ export async function addBookToUserLibrary(
     const res = await api.post(`${API_URL}/profile/add-read-book`, {
       readCategory,
       userId,
-      book,
+      bookId,
       oldCategory,
     });
 
@@ -23,7 +23,7 @@ export async function addBookToUserLibrary(
   }
 }
 
-export async function getBookById(id: string) {
+export async function getBookById(id: string): Promise<Book> {
   try {
     const res = await api.get(`${API_URL}/book/${id}`);
 

@@ -13,22 +13,19 @@ export default function BooksList({ books }: BooksListProps) {
       <h3 className="book-list-title">Books</h3>
       <div className="book-list">
         {Array.isArray(books) && books.length > 0 ? (
-          books.map((book: any) => {
-            const bookId = book.id || book._id;
+          books.map((book: Book) => {
             return (
               <Link
-                key={bookId || book.title}
-                href={`/books/${bookId}`}
+                key={book.googleId}
+                href={`/books/${book.googleId}`}
                 className="book-list-item"
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
-                {book.smallThumbnail && <img src={book.smallThumbnail} alt={book.title} className="book-list-cover" />}
-                {book.cover && <img src={book.cover} alt={book.title} className="book-list-cover" />}
+                {book.imageLinks.smallThumbnail && (
+                  <img src={book.imageLinks.smallThumbnail} alt={book.title} className="book-list-cover" />
+                )}
                 <div style={{ flex: 1 }}>
                   <h2 style={{ margin: 0 }}>{book.title}</h2>
-                  {book.subtitle && (
-                    <div style={{ fontStyle: 'italic', color: '#555', marginBottom: 4 }}>{book.subtitle}</div>
-                  )}
                   <div>
                     <strong>Authors:</strong>{' '}
                     {Array.isArray(book.authors) ? book.authors.join(', ') : book.authors || '—'}
@@ -40,7 +37,7 @@ export default function BooksList({ books }: BooksListProps) {
                     <strong>Year:</strong>{' '}
                     {book.publishedDate
                       ? typeof book.publishedDate === 'string'
-                        ? book.publishedDate.match(/^\d{4}/)?.[0] || book.publishedDate
+                        ? (book.publishedDate as string).match(/^\d{4}/)?.[0] || book.publishedDate
                         : new Date(book.publishedDate).getFullYear()
                       : '—'}
                   </div>
