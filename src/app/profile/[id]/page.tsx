@@ -9,6 +9,7 @@ import Actions from '@/src/components/Profile/Actions';
 import CurrentlyReading from '@/src/components/Profile/CurrentlyReading';
 import Footer from '@/src/components/Footer';
 import AiPracticle from '@/src/components/Profile/AiPracticle';
+import RecentNotes from '@/src/components/Profile/RecentNotes';
 
 interface ProfilePageParams {
   params: {
@@ -45,6 +46,7 @@ export default async function Profile(props: ProfilePageParams) {
             <div className="flex-1">
               <Actions />
               <CurrentlyReading userId={user.user} />
+              {/* <RecentNotes /> */}
             </div>
           </div>
         </div>

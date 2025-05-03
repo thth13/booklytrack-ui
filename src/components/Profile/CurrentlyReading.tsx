@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faBookOpen, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getReadBooks } from '@/src/lib/api';
+import { getReadBooks, addBookSummmary } from '@/src/lib/api';
 import { Book, ReadCategory } from '@/src/types';
 import Link from 'next/link';
 
@@ -14,6 +14,14 @@ interface CurrentlyReadingProps {
 const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [current, setCurrent] = useState(0);
+  const [note, setNote] = useState('');
+
+  const handleAddNote = async () => {
+    if (!note.trim()) return;
+
+    await addBookSummmary(userId, books[current]._id, note);
+    setNote('');
+  };
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -93,10 +101,15 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
             <h4 className="text-xl font-medium text-gray-800 mb-2">{books[current].title}</h4>
             <p className="text-gray-600 mb-4">by {books[current].authors?.join(', ') || '—'}</p>
             <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
               placeholder="Write your thoughts about the book..."
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 h-32 resize-none bg-gray-50"
             ></textarea>
-            <button className="mt-3 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center">
+            <button
+              className="mt-3 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center"
+              onClick={handleAddNote}
+            >
               <i className="fa-solid fa-plus mr-2"></i>
               Add Note
             </button>
