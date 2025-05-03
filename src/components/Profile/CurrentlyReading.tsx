@@ -1,45 +1,110 @@
-const CurrentlyReading = () => (
-  <section id="current-book" className="bg-white rounded-lg p-6 shadow-sm">
-    <div className="flex justify-between items-center mb-4">
-      <h3 className="text-lg font-medium text-gray-800">Currently Reading</h3>
-      <div className="flex gap-2">
-        <button id="prev-book" className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
-          <i className="fa-solid fa-chevron-left"></i>
-        </button>
-        <button id="next-book" className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
-          <i className="fa-solid fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-    <div id="books-carousel" className="relative overflow-hidden">
-      <div className="relative">
-        <img
-          className="w-full h-48 object-cover rounded-lg"
-          src="https://storage.googleapis.com/uxpilot-auth.appspot.com/de264b66b2-5bf912f61015a66d1d4c.png"
-          alt="book cover"
-        />
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent rounded-b-lg">
-          <h4 className="text-white font-medium">Atomic Habits</h4>
-          <p className="text-white/80 text-sm">James Clear</p>
-          <div className="mt-2 bg-white/20 rounded-full h-1">
-            <div className="bg-blue-500 w-3/4 h-1 rounded-full"></div>
-          </div>
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight, faBookOpen, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { getReadBooks } from '@/src/lib/api';
+import { Book, ReadCategory } from '@/src/types';
+import Link from 'next/link';
+
+interface CurrentlyReadingProps {
+  userId: string;
+}
+
+const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const result = await getReadBooks(userId, ReadCategory.READING);
+        setBooks(result || []);
+        setCurrent(0);
+      } catch (e) {
+        setBooks([]);
+      }
+    };
+    if (userId) {
+      fetchBooks();
+    }
+  }, [userId]);
+
+  const prevBook = () => setCurrent((prev) => (prev === 0 ? books.length - 1 : prev - 1));
+  const nextBook = () => setCurrent((prev) => (prev === books.length - 1 ? 0 : prev + 1));
+
+  if (!books.length) {
+    return (
+      <section id="current-book" className="bg-white rounded-xl p-8 shadow-sm mb-8">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-medium text-gray-800">Currently Reading</h3>
         </div>
-      </div>
-      <div className="mt-4">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Add a quick note..."
-            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            <i className="fa-solid fa-plus"></i>
+        <div className="text-center py-12">
+          <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center rounded-full bg-gray-100">
+            <FontAwesomeIcon icon={faBookOpen} className="text-4xl text-gray-400" />
+          </div>
+          <h4 className="text-xl font-medium text-gray-800 mb-3">No Books in Progress</h4>
+          <p className="text-gray-600 mb-6 max-w-md mx-auto">
+            Start your reading journey by adding a book to your currently reading list.
+          </p>
+          <Link
+            href="/books"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center"
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add a Book
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="current-book" className="bg-white rounded-xl p-8 shadow-sm mb-8">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-2xl font-medium text-gray-800">Currently Reading</h3>
+        <div className="flex gap-3">
+          <button
+            id="prev-book"
+            className="p-3 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+            onClick={prevBook}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+          <button
+            id="next-book"
+            className="p-3 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+            onClick={nextBook}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       </div>
-    </div>
-  </section>
-);
+      <div id="books-carousel" className="relative">
+        <div className="flex items-start gap-8">
+          <div className="w-48">
+            <img
+              className="w-full h-64 object-cover rounded-lg shadow-lg"
+              src={books[current].imageLinks.thumbnail}
+              alt="book cover"
+            />
+          </div>
+          <div className="flex-1">
+            <h4 className="text-xl font-medium text-gray-800 mb-2">{books[current].title}</h4>
+            <p className="text-gray-600 mb-4">by {books[current].authors?.join(', ') || '—'}</p>
+            <textarea
+              placeholder="Write your thoughts about the book..."
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 h-32 resize-none bg-gray-50"
+            ></textarea>
+            <button className="mt-3 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center">
+              <i className="fa-solid fa-plus mr-2"></i>
+              Add Note
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default CurrentlyReading;

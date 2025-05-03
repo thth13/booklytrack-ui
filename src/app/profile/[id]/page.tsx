@@ -1,17 +1,14 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import './style.css';
 import { cookies } from 'next/headers';
 import { UserProfile } from '@/src/types';
 import { getProfile } from '@/src/lib/api';
-import LogoutButton from '@/src/components/LogoutButton';
 import Header from '@/src/components/Header';
 import ProfileCard from '@/src/components/Profile/ProfileCard';
-import RecentNotes from '@/src/components/Profile/RecentNotes';
 import Actions from '@/src/components/Profile/Actions';
 import CurrentlyReading from '@/src/components/Profile/CurrentlyReading';
-import AiPracticle from '@/src/components/Profile/AiPracticle';
 import Footer from '@/src/components/Footer';
+import AiPracticle from '@/src/components/Profile/AiPracticle';
 
 interface ProfilePageParams {
   params: {
@@ -43,12 +40,11 @@ export default async function Profile(props: ProfilePageParams) {
           <div className="flex gap-8">
             <div className="w-80 space-y-6">
               <ProfileCard isMyProfile={isMyProfile} user={user} />
-              {/* <CurrentlyReading /> */}
+              {/* <AiPracticle /> */}
             </div>
             <div className="flex-1">
               <Actions />
-              {/* <RecentNotes /> */}
-              {/* <AiPracticle /> */}
+              <CurrentlyReading userId={user.user} />
             </div>
           </div>
         </div>
