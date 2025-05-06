@@ -12,6 +12,16 @@ export async function getBookSummary(userId: string, bookId: string) {
   }
 }
 
+export async function getBookRecentSummaries(userId: string) {
+  try {
+    const res = await api.get(`${API_URL}/book-summary/recent/${userId}`);
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function addBookSummmary(userId: string, bookId: string, summary: string) {
   try {
     const res = await api.post(`${API_URL}/book-summary/`, {

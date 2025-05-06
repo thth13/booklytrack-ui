@@ -46,7 +46,7 @@ export default async function Profile(props: ProfilePageParams) {
             <div className="flex-1">
               <Actions />
               <CurrentlyReading userId={user.user} />
-              {/* <RecentNotes /> */}
+              <RecentNotes userId={user.user} />
             </div>
           </div>
         </div>

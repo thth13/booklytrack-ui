@@ -48,7 +48,6 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ item, onDelete, onEdit }) => 
       {isEditing ? (
         <div>
           <ReactQuill value={editValue} onChange={setEditValue} theme="snow" />
-
           <div>
             <button onClick={handleSave} className="save-summary-btn">
               Сохранить

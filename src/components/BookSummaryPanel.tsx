@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill-new';
 import { addBookSummmary, getBookSummary, removeSummaryItem, updateSummaryItem } from '../lib/api';
 import { useUserProfile } from '../context/UserProfileContext';
 import { useBook } from '../context/BookContext';
-import { Book } from '../types';
+import { Book, BookNotes } from '../types';
 import SummaryCard from './SummaryCard';
 import './style.css';
 
@@ -15,7 +15,7 @@ interface BookTabsPanelProps {
 
 export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
   const [activeTab, setActiveTab] = useState<'summary' | 'review' | 'quotes'>('summary');
-  const [summary, setSummary] = useState<string[]>([]);
+  const [summary, setSummary] = useState<BookNotes[]>([]);
   const [summaryField, setSummaryField] = useState<string>('');
   const { profile } = useUserProfile();
   const { currentCategory } = useBook();
@@ -25,7 +25,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
 
     if (profile?.user) {
       await addBookSummmary(profile?.user, book._id, summaryField);
-      setSummary((prev) => [...prev, summaryField]);
+      setSummary((prev) => [...prev, { content: summaryField }]);
       setSummaryField('');
     }
   };
@@ -40,7 +40,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
   const handleEditSummary = async (indexToEdit: number, newValue: string) => {
     if (summary && profile?.user) {
       await updateSummaryItem(profile.user, book._id, indexToEdit, newValue);
-      setSummary((prev) => prev.map((item, idx) => (idx === indexToEdit ? newValue : item)));
+      setSummary((prev) => prev.map((item, idx) => (idx === indexToEdit ? { ...item, content: newValue } : item)));
     }
   };
 
@@ -90,7 +90,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
                     {summary.map((item, index) => (
                       <SummaryCard
                         key={index}
-                        item={item}
+                        item={item.content}
                         onEdit={(newValue) => handleEditSummary(index, newValue)}
                         onDelete={() => handleDeleteSummary(index)}
                       />

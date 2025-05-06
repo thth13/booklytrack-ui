@@ -19,6 +19,12 @@ export interface Book {
   publishedDate: Date;
 }
 
+export interface BookNotes {
+  _id?: string;
+  content: string;
+  createdAt?: Date;
+}
+
 export interface UserProfile {
   _id: string;
   name: string;
