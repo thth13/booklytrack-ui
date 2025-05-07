@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import noAvatar from '@/public/noAvatar.png';
 import { AVATAR_URL } from '../constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faBell } from '@fortawesome/free-solid-svg-icons';
 
 interface HeaderProps {
   avatar?: string;
@@ -17,11 +19,11 @@ const Header = ({ avatar }: HeaderProps) => (
         </div>
         <div className="flex items-center space-x-4">
           <button className="p-2 hover:bg-gray-100 rounded-full">
-            <i className="fa-solid fa-magnifying-glass text-gray-600"></i>
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-gray-600" />
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <i className="fa-solid fa-bell text-gray-600"></i>
-          </button>
+          {/* <button className="p-2 hover:bg-gray-100 rounded-full">
+            <FontAwesomeIcon icon={faBell} className="text-gray-600" />
+          </button> */}
           <img
             src={avatar ? `${AVATAR_URL}/${avatar}` : noAvatar.src}
             alt="Profile"

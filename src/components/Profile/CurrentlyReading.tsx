@@ -110,7 +110,7 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
               className="mt-3 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center"
               onClick={handleAddNote}
             >
-              <i className="fa-solid fa-plus mr-2"></i>
+              <FontAwesomeIcon icon={faPlus} className="mr-2" />
               Add Note
             </button>
           </div>

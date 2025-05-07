@@ -4,51 +4,41 @@ import { Book } from '../types';
 import Link from 'next/link';
 
 interface BooksListProps {
-  books: Book[];
+  book: Book;
 }
 
-export default function BooksList({ books }: BooksListProps) {
-  return (
-    <div className="book-list-container">
-      <h3 className="book-list-title">Books</h3>
-      <div className="book-list">
-        {Array.isArray(books) && books.length > 0 ? (
-          books.map((book: Book) => {
-            return (
-              <Link
-                key={book.googleId}
-                href={`/books/${book.googleId}`}
-                className="book-list-item"
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                {book.imageLinks.smallThumbnail && (
-                  <img src={book.imageLinks.smallThumbnail} alt={book.title} className="book-list-cover" />
-                )}
-                <div style={{ flex: 1 }}>
-                  <h2 style={{ margin: 0 }}>{book.title}</h2>
-                  <div>
-                    <strong>Authors:</strong>{' '}
-                    {Array.isArray(book.authors) ? book.authors.join(', ') : book.authors || '—'}
-                  </div>
-                  <div>
-                    <strong>Publisher:</strong> {book.publisher || '—'}
-                  </div>
-                  <div>
-                    <strong>Year:</strong>{' '}
-                    {book.publishedDate
-                      ? typeof book.publishedDate === 'string'
-                        ? (book.publishedDate as string).match(/^\d{4}/)?.[0] || book.publishedDate
-                        : new Date(book.publishedDate).getFullYear()
-                      : '—'}
-                  </div>
-                </div>
-              </Link>
-            );
-          })
-        ) : (
-          <p className="book-list-empty-message">You don't have any books added yet</p>
-        )}
+const BooksList = ({ book }: BooksListProps) => (
+  <Link
+    href={`/books/${book.googleId}`}
+    className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow flex h-[160px]"
+  >
+    {book.imageLinks.smallThumbnail && (
+      <img src={book.imageLinks.smallThumbnail} alt={book.title} className="w-[107px] h-[160px] object-cover" />
+    )}
+
+    <div className="flex-1 p-4">
+      <div className="flex justify-between items-start">
+        <h3 className="text-lg font-bold">{book.title}</h3>
+        <span className="text-gray-500 text-sm">
+          {book.publishedDate
+            ? typeof book.publishedDate === 'string'
+              ? (book.publishedDate as string).match(/^\d{4}/)?.[0] || book.publishedDate
+              : new Date(book.publishedDate).getFullYear()
+            : '—'}
+        </span>
       </div>
+      <p className="text-blue-600 text-sm mb-2">{book.authors ? book.authors.join(', ') : book.authors || '—'}</p>
+      {/* <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        An easy and proven way to build good habits and break bad ones. A practical guide to transform your habits and
+        get 1% better every day.
+      </p>
+      <div className="flex space-x-3">
+        <button className="bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-blue-700 transition-colors">
+          Add to Reading List
+        </button>
+      </div> */}
     </div>
-  );
-}
+  </Link>
+);
+
+export default BooksList;
