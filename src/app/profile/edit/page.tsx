@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { editProfile, getProfile } from '@/src/lib/api';
 import { AVATAR_URL } from '@/src/constants';
+import Image from 'next/image';
 
 export interface ProfileFormData {
   name: string;
@@ -28,8 +29,7 @@ const EditProfile = () => {
     avatar: '',
   });
   const [avatarFile, setAvatarFile] = useState<File>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string>(Cookies.get('userId') || '');
+  const [userId] = useState<string>(Cookies.get('userId') || '');
   const [errors, setErrors] = useState<ValidationErrors>({});
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -58,13 +58,15 @@ const EditProfile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
-    setLoading(true);
+    // setLoading(true);
 
     try {
       const serverFormData = new FormData();
       serverFormData.append('name', formData.name);
       serverFormData.append('description', formData.description);
-      avatarFile && serverFormData.append('avatar', avatarFile);
+      if (avatarFile) {
+        serverFormData.append('avatar', avatarFile);
+      }
 
       await editProfile(userId, serverFormData);
       router.push(`/profile/${userId}`);
@@ -72,8 +74,6 @@ const EditProfile = () => {
       const serverErrors = error.response.data;
 
       setErrors(serverErrors);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -91,7 +91,7 @@ const EditProfile = () => {
       }
     };
     fetchProfile();
-  }, []);
+  }, [userId]);
 
   return (
     <div className="profile-edit-container">
@@ -142,7 +142,9 @@ const EditProfile = () => {
           />
           {formData.avatar && (
             <div className="avatar-preview">
-              <img
+              <Image
+                width={100}
+                height={100}
                 src={formData.avatar.startsWith('data:') ? formData.avatar : `${AVATAR_URL}/${formData.avatar}`}
                 alt="Avatar preview"
                 className="avatar-image"

@@ -1,7 +1,6 @@
 'use client';
 import { useState, useContext, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { AuthContext } from '@/src/context/AuthContext';
 import { useTheme } from '@/src/context/ThemeContext';
 import themeStyles from '@/src/lib/themeStyles';
@@ -24,7 +23,6 @@ interface ValidationErrors {
 export default function RegistrationForm() {
   const auth = useContext(AuthContext);
   const { theme, toggleTheme } = useTheme();
-  if (!auth) return null;
 
   const { register } = auth;
 

@@ -19,8 +19,6 @@ interface ValidationErrors {
 export default function RegistrationForm() {
   const auth = useContext(AuthContext);
   const { theme, toggleTheme } = useTheme();
-  if (!auth) return null;
-
   const { login } = auth;
 
   const [formData, setFormData] = useState<FormData>({

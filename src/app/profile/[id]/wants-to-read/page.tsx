@@ -1,11 +1,9 @@
 import UserBooksPage from '@/src/components/UserBooksPage';
 import { ReadCategory } from '@/src/types';
 
-interface WantsToReadPageProps {
-  params: {
-    id: string;
-  };
-}
+type WantsToReadPageProps = {
+  params: Promise<{ id: string }>;
+};
 
 export default async function WantsToReadPage({ params }: WantsToReadPageProps) {
   const { id } = await params;

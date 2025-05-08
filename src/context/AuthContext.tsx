@@ -14,7 +14,12 @@ interface AuthContextType {
   logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType>({
+  userId: '',
+  login: async () => {},
+  register: async () => {},
+  logout: () => {},
+});
 
 interface AuthProviderProps {
   children: ReactNode;

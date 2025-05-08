@@ -37,9 +37,12 @@ api.interceptors.response.use(
       } catch (refreshError) {
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
+
         if (typeof window !== 'undefined') {
           window.location.href = '/auth/login';
         }
+
+        console.error('Failed to refresh access token:', refreshError);
       }
     }
     return Promise.reject(error);

@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import './style.css';
 import { searchBooks } from '@/src/lib/api';
 import BooksList from '@/src/components/BooksList';
 import { Book } from '@/src/types';
@@ -10,6 +8,7 @@ import Header from '@/src/components/Header';
 import Footer from '@/src/components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import './style.css';
 
 export default function FindBooksPage() {
   const [query, setQuery] = useState(() => {
@@ -51,6 +50,7 @@ export default function FindBooksPage() {
         setBooks(mappedBooks);
       } catch (err) {
         setBooks([]);
+        console.error(err);
       } finally {
         setLoading(false);
       }

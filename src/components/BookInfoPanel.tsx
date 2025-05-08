@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Book } from '../types';
 
 export default function BookInfoPanel({ book }: { book: Book }) {
@@ -5,7 +6,13 @@ export default function BookInfoPanel({ book }: { book: Book }) {
     <div className="book-info-panel">
       <div className="book-cover-block">
         {book.imageLinks?.thumbnail ? (
-          <img src={book.imageLinks?.thumbnail} alt={book.title} className="book-cover-large" />
+          <Image
+            width={180}
+            height={270}
+            src={book.imageLinks?.thumbnail}
+            alt={book.title}
+            className="book-cover-large"
+          />
         ) : (
           <div className="book-cover-large" />
         )}

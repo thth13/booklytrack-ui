@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserProfile } from '@/src/types';
@@ -13,7 +14,9 @@ interface ProfileCardProps {
 const ProfileCard = ({ isMyProfile, user }: ProfileCardProps) => (
   <section id="profile-card" className="bg-white rounded-lg p-6 shadow-sm">
     <div className="text-center">
-      <img
+      <Image
+        width={240}
+        height={240}
         src={user.avatar ? `${AVATAR_URL}/${user.avatar}` : noAvatar.src}
         alt="Profile"
         className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-100"

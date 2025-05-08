@@ -35,7 +35,7 @@ export default function BookCategory({ book }: BookCategoryProps) {
   useEffect(() => {
     if (!book || !profile) return;
     setCurrentCategory(getUserBookCategory(profile, book._id));
-  }, [book, profile]);
+  }, [book, profile, setCurrentCategory]);
 
   return (
     <>

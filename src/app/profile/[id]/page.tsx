@@ -11,14 +11,11 @@ import Footer from '@/src/components/Footer';
 import AiPracticle from '@/src/components/Profile/AiPracticle';
 import RecentNotes from '@/src/components/Profile/RecentNotes';
 
-interface ProfilePageParams {
-  params: {
-    id: string;
-  };
-}
+type ProfilePageProps = {
+  params: Promise<{ id: string }>;
+};
 
-export default async function Profile(props: ProfilePageParams) {
-  const { params } = props;
+export default async function Profile({ params }: ProfilePageProps) {
   const { id } = await params;
 
   // Get userId from cookies on the server

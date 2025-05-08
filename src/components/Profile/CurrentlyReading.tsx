@@ -6,6 +6,7 @@ import { faChevronLeft, faChevronRight, faBookOpen, faPlus } from '@fortawesome/
 import { getReadBooks, addBookSummmary } from '@/src/lib/api';
 import { Book, ReadCategory } from '@/src/types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface CurrentlyReadingProps {
   userId: string;
@@ -31,6 +32,7 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
         setCurrent(0);
       } catch (e) {
         setBooks([]);
+        console.error('Error fetching books:', e);
       }
     };
     if (userId) {
@@ -91,11 +93,15 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
       <div id="books-carousel" className="relative">
         <div className="flex items-start gap-8">
           <div className="w-48">
-            <img
-              className="w-full h-64 object-cover rounded-lg shadow-lg"
-              src={books[current].imageLinks.thumbnail}
-              alt="book cover"
-            />
+            {books[current].imageLinks.thumbnail && (
+              <Image
+                width={180}
+                height={270}
+                className="w-full h-64 object-cover rounded-lg shadow-lg"
+                src={books[current].imageLinks.thumbnail}
+                alt="book cover"
+              />
+            )}
           </div>
           <div className="flex-1">
             <h4 className="text-xl font-medium text-gray-800 mb-2">{books[current].title}</h4>

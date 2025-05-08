@@ -2,6 +2,7 @@ import React from 'react';
 import './style.css';
 import { Book } from '../types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface BooksListProps {
   book: Book;
@@ -13,7 +14,13 @@ const BooksList = ({ book }: BooksListProps) => (
     className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow flex h-[160px]"
   >
     {book.imageLinks.smallThumbnail && (
-      <img src={book.imageLinks.smallThumbnail} alt={book.title} className="w-[107px] h-[160px] object-cover" />
+      <Image
+        width={107}
+        height={160}
+        src={book.imageLinks.smallThumbnail}
+        alt={book.title}
+        className="w-[107px] h-[160px] object-cover"
+      />
     )}
 
     <div className="flex-1 p-4">

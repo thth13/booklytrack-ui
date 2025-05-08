@@ -8,14 +8,11 @@ import BookCategory from '@/src/components/BookCategory';
 import 'react-quill-new/dist/quill.snow.css';
 import './style.css';
 
-interface BookPageParams {
-  params: {
-    id: string;
-  };
-}
+type BookPageProps = {
+  params: Promise<{ id: string }>;
+};
 
-export default async function BookPage(props: BookPageParams) {
-  const { params } = props;
+export default async function BookPage({ params }: BookPageProps) {
   const { id } = await params;
 
   const book = await fetchBook(id);

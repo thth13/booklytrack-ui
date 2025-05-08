@@ -11,7 +11,7 @@ interface UserBooksPageProps {
   category: ReadCategory;
 }
 
-export default async function ({ userId, category }: UserBooksPageProps) {
+export default async function UserBooksPage({ userId, category }: UserBooksPageProps) {
   const books = await fetchBooks(userId, category);
 
   return (

@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { addBookToUserLibrary, getProfile } from '@/src/lib/api';
 import Cookies from 'js-cookie';
-import { Book, ReadCategory, UserProfile } from '../types';
+import { ReadCategory, UserProfile } from '../types';
 import { useBook } from './BookContext';
 
 interface UserProfileContextType {

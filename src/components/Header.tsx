@@ -2,7 +2,8 @@ import Link from 'next/link';
 import noAvatar from '@/public/noAvatar.png';
 import { AVATAR_URL } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 interface HeaderProps {
   avatar?: string;
@@ -24,7 +25,9 @@ const Header = ({ avatar }: HeaderProps) => (
           {/* <button className="p-2 hover:bg-gray-100 rounded-full">
             <FontAwesomeIcon icon={faBell} className="text-gray-600" />
           </button> */}
-          <img
+          <Image
+            width={100}
+            height={100}
             src={avatar ? `${AVATAR_URL}/${avatar}` : noAvatar.src}
             alt="Profile"
             className="w-10 h-10 rounded-full border-2 border-gray-200"
