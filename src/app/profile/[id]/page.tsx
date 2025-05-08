@@ -41,7 +41,7 @@ export default async function Profile(props: ProfilePageParams) {
           <div className="flex gap-8">
             <div className="w-80 space-y-6">
               <ProfileCard isMyProfile={isMyProfile} user={user} />
-              {/* <AiPracticle /> */}
+              <AiPracticle userId={user.user} />
             </div>
             <div className="flex-1">
               <Actions />
