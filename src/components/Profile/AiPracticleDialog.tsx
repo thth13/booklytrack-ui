@@ -1,4 +1,5 @@
 'use client';
+import { API_URL } from '@/src/constants';
 import { getBookRecentSummaries } from '@/src/lib/api';
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
@@ -32,7 +33,7 @@ export default function QuizPage({ userId }: QuiPageProps) {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io(process.env.NEXT_PUBLIC_WS_SERVER || 'http://localhost:8000');
+    socketRef.current = io(API_URL);
 
     socketRef.current.on('connect', () => {
       setIsConnected(true);
