@@ -58,7 +58,6 @@ const EditProfile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
-    // setLoading(true);
 
     try {
       const serverFormData = new FormData();
@@ -82,9 +81,9 @@ const EditProfile = () => {
       try {
         const profile = await getProfile(userId);
         setFormData({
-          name: profile.name,
-          description: profile.description,
-          avatar: profile.avatar,
+          name: profile.name || '',
+          description: profile.description || '',
+          avatar: profile.avatar || '',
         });
       } catch (error) {
         console.error('Error fetching profile:', error);

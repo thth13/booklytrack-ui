@@ -32,7 +32,7 @@ export default async function Profile({ params }: ProfilePageProps) {
 
   return (
     <>
-      <Header avatar={user.avatar} />
+      <Header />
       <main className="pt-20 min-h-[800px] bg-gray-50">
         <div className="container mx-auto px-6 py-8">
           <div className="flex gap-8">
