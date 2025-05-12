@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
-      { url: '/icons/favicon_16x16.ico', sizes: '16x16', type: 'image/x-icon' },
-      { url: '/icons/favicon_32x32.ico', sizes: '32x32', type: 'image/x-icon' },
-      { url: '/icons/favicon_192x192.ico', sizes: '192x192', type: 'image/x-icon' },
+      { url: '/icons/favicon_16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/icons/favicon_32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icons/favicon_192x192.png', sizes: '192x192', type: 'image/png' },
     ],
-    shortcut: '/icons/favicon_32x32.ico',
+    shortcut: '/icons/favicon_32x32.png',
   },
 
   openGraph: {
