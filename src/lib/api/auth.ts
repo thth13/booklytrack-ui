@@ -20,10 +20,9 @@ export const loginUser = async (email: string, password: string): Promise<AuthRe
   }
 };
 
-export const registerUser = async (name: string, email: string, password: string): Promise<AuthResponse> => {
+export const registerUser = async (email: string, password: string): Promise<AuthResponse> => {
   try {
     const res = await api.post(`${API_URL}/user/register`, {
-      name,
       email,
       password,
     });

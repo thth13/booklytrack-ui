@@ -6,14 +6,14 @@ import { useTheme } from '@/src/context/ThemeContext';
 import themeStyles from '@/src/lib/themeStyles';
 
 interface FormData {
-  name: string;
+  // name: string;
   email: string;
   password: string;
   confirmPassword: string;
 }
 
 interface ValidationErrors {
-  name?: string;
+  // name?: string;
   email?: string;
   password?: string;
   confirmPassword?: string;
@@ -27,7 +27,7 @@ export default function RegistrationForm() {
   const { register } = auth;
 
   const [formData, setFormData] = useState<FormData>({
-    name: '',
+    // name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -40,9 +40,9 @@ export default function RegistrationForm() {
   const validateForm = (): boolean => {
     const newErrors: ValidationErrors = {};
 
-    if (formData.name.length < 1) {
-      newErrors.name = 'Логин должен содержать минимум 3 символааа';
-    }
+    // if (formData.name.length < 1) {
+    //   newErrors.name = 'Логин должен содержать минимум 3 символааа';
+    // }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
@@ -77,11 +77,11 @@ export default function RegistrationForm() {
       return;
     }
 
-    const { name, email, password } = formData;
+    const { email, password } = formData;
     setLoading(true);
 
     try {
-      await register(name, email, password);
+      await register(email, password);
     } catch (error: any) {
       const serverErrors = error.response.data;
 
@@ -129,29 +129,6 @@ export default function RegistrationForm() {
       >
         <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Sign up</h2>
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '15px' }}>
-            <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              style={{
-                width: '100%',
-                padding: '8px',
-                border: errors.name ? '1px solid red' : `1px solid ${currentTheme.inputBorder}`,
-                borderRadius: '5px',
-                backgroundColor: currentTheme.inputBackground,
-                color: currentTheme.textColor,
-              }}
-            />
-            {errors.name && <span style={{ color: 'red', fontSize: '12px' }}>{errors.name}</span>}
-          </div>
           <div style={{ marginBottom: '15px' }}>
             <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>
               Email

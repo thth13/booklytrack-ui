@@ -10,7 +10,7 @@ import { useUserProfile } from './UserProfileContext';
 interface AuthContextType {
   userId: string;
   login: (email: string, password: string) => Promise<void>;
-  register: (login: string, email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -47,9 +47,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (email: string, password: string) => {
     try {
-      const data = await registerUser(name, email, password);
+      const data = await registerUser(email, password);
 
       signIn(data);
     } catch (err: any) {
