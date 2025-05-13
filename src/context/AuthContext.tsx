@@ -9,15 +9,13 @@ import { useUserProfile } from './UserProfileContext';
 
 interface AuthContextType {
   userId: string;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
+  authUser: (email: string, password: string, isLogin: boolean) => Promise<void>;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   userId: '',
-  login: async () => {},
-  register: async () => {},
+  authUser: async () => {},
   logout: () => {},
 });
 
@@ -37,26 +35,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [userId]);
 
-  const login = async (email: string, password: string) => {
+  const authUser = async (email: string, password: string, isLogin: boolean) => {
     try {
-      const data = await loginUser(email, password);
+      let data;
+
+      if (isLogin) {
+        data = await loginUser(email, password);
+      } else {
+        data = await registerUser(email, password);
+      }
 
       signIn(data);
     } catch (err) {
       throw err;
     }
   };
-
-  const register = async (email: string, password: string) => {
-    try {
-      const data = await registerUser(email, password);
-
-      signIn(data);
-    } catch (err: any) {
-      throw err;
-    }
-  };
-
   const signIn = (userData: any) => {
     const { id, accessToken, refreshToken } = userData;
 
@@ -80,5 +73,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     router.push('/');
   };
 
-  return <AuthContext.Provider value={{ userId, login, logout, register }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ userId, authUser, logout }}>{children}</AuthContext.Provider>;
 };

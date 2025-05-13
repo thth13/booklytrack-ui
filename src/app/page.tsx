@@ -23,10 +23,13 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/auth/login" className="px-6 py-2 text-blue-600 hover:text-blue-700">
+              <Link href="/auth/login" className="px-6 py-2 text-blue-600 hover:text-blue-700 text-sm md:text-base">
                 Log in
               </Link>
-              <Link href="/auth/register" className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <Link
+                href="/auth/register"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base"
+              >
                 Sign up
               </Link>
             </div>
@@ -38,15 +41,17 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
-              <h1 className="text-5xl font-bold mb-6 leading-tight">Track, Learn, and Grow with BooklyTrack</h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-center md:text-left">
+                Track, Learn, and Grow with BooklyTrack
+              </h1>
+              <p className="text-base md:text-xl text-gray-600 mb-8 text-center md:text-left">
                 Organize your books, create smart summaries, and enhance your understanding through AI-guided
                 discussions. Transform your reading into active learning.
               </p>
               <div className="flex gap-4">
                 <Link
                   href="/auth/register"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-medium"
+                  className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-medium w-full md:w-auto text-center"
                 >
                   Get Started
                 </Link>
