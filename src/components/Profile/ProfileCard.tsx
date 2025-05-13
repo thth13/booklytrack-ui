@@ -29,7 +29,7 @@ const ProfileCard = ({ isMyProfile, user }: ProfileCardProps) => (
         <Link
           href="/profile/edit"
           id="btn-edit-profile"
-          className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 mt-4 inline-flex items-center justify-center"
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 mt-4 inline-flex items-center justify-center"
         >
           <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
           Edit Profile
