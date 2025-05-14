@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { getBookById } from '@/src/lib/api';
 import { Book } from '@/src/types';
 import BookSummaryPanel from '@/src/components/BookSummaryPanel';

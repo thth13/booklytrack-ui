@@ -45,7 +45,7 @@ const BookSection = ({ book }: { book: Book }) => {
           <div className="mt-8 grid grid-cols-3 gap-4">
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="text-gray-600">Pages</div>
-              <div className="text-xl font-semibold text-gray-800">320</div>
+              <div className="text-xl font-semibold text-gray-800">{book.pageCount}</div>
             </div>
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="text-gray-600">Published</div>
@@ -59,7 +59,7 @@ const BookSection = ({ book }: { book: Book }) => {
             </div>
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="text-gray-600">Language</div>
-              <div className="text-xl font-semibold text-gray-800">English</div>
+              <div className="text-xl font-semibold text-gray-800">{book.language}</div>
             </div>
           </div>
         </div>

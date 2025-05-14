@@ -17,6 +17,8 @@ export interface Book {
   categories: string[];
   publisher: string;
   publishedDate: Date;
+  pageCount: number;
+  language: string;
 }
 
 export interface BookNotes {

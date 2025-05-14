@@ -6,22 +6,24 @@ import { Book, BookNotes } from '@/src/types';
 import { addBookSummmary, getBookSummary, removeSummaryItem, updateSummaryItem } from '../../lib/api';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faPencil, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { formatDate } from '@/src/lib/utils';
 
 const BookNotesSection = ({ book }: { book: Book }) => {
   const [notes, setNotes] = useState<BookNotes[]>([]);
   const [noteField, setNoteField] = useState<string>('');
+  const [showAddNoteForm, setShowAddNoteForm] = useState(false);
   const { profile } = useUserProfile();
   const { currentCategory } = useBook();
 
-  const addSummary = async (e: any) => {
+  const addNote = async (e: any) => {
     e.preventDefault();
 
     if (profile?.user) {
       await addBookSummmary(profile?.user, book._id, noteField);
       setNotes((prev) => [...prev, { content: noteField, createdAt: new Date() }]);
       setNoteField('');
+      setShowAddNoteForm(false);
     }
   };
 
@@ -61,13 +63,46 @@ const BookNotesSection = ({ book }: { book: Book }) => {
     <section id="book-notes" className="bg-white rounded-xl p-8 shadow-sm mb-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">My Notes</h2>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-          <i className="fa-solid fa-plus mr-2"></i>
-          Add Note
-        </button>
+        {!showAddNoteForm && (
+          <button
+            onClick={() => setShowAddNoteForm(true)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            <i className="fa-solid fa-plus mr-2"></i>
+            Add Note
+          </button>
+        )}
       </div>
 
       <div className="space-y-6">
+        {showAddNoteForm && (
+          <div id="new-note-form" className="border border-gray-300 rounded-lg p-6 bg-gray-50">
+            <form onSubmit={addNote} className="space-y-4">
+              {/* <ReactQuill
+                className="w-full  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                placeholder="Write your note here..."
+              /> */}
+              <textarea
+                value={noteField}
+                onChange={(e) => setNoteField(e.target.value)}
+                className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                placeholder="Write your note here..."
+              />
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowAddNoteForm(false)}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  Save Note
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
         {notes.map((item, index) => (
           <div key={index} className="p-6 bg-gray-50 rounded-lg">
             <div className="flex justify-between items-start mb-3">
@@ -83,7 +118,7 @@ const BookNotesSection = ({ book }: { book: Book }) => {
                 <button className="p-2 text-gray-600 hover:text-blue-600">
                   <FontAwesomeIcon icon={faPencil} />
                 </button>
-                <button className="p-2 text-gray-600 hover:text-red-600">
+                <button onClick={() => handleDeleteSummary(index)} className="p-2 text-gray-600 hover:text-red-600">
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>
