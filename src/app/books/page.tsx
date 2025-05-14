@@ -8,7 +8,6 @@ import Header from '@/src/components/Header';
 import Footer from '@/src/components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import './style.css';
 
 export default function FindBooksPage() {
   const [query, setQuery] = useState(() => {

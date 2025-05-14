@@ -4,7 +4,6 @@ import BooksList from '@/src/components/BooksList';
 import { Book, ReadCategory } from '../types';
 import Footer from './Footer';
 import Header from './Header';
-import './style.css';
 
 interface UserBooksPageProps {
   userId: string;

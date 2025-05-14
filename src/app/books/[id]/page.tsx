@@ -1,15 +1,10 @@
 import React from 'react';
 import { getBookById } from '@/src/lib/api';
 import { Book } from '@/src/types';
-import BookSummaryPanel from '@/src/components/BookSummaryPanel';
-import BookInfoPanel from '@/src/components/BookInfoPanel';
-import BookCategory from '@/src/components/BookCategory';
-import 'react-quill-new/dist/quill.snow.css';
-import './style.css';
 import Header from '@/src/components/Header';
 import BookSection from '@/src/components/Book/BookInfo';
 import BookNotesSection from '@/src/components/Book/notes/Notes';
-import BookAiPracticle from '@/src/components/Book/BookAiPracticle';
+// import BookAiPracticle from '@/src/components/Book/BookAiPracticle';
 
 type BookPageProps = {
   params: Promise<{ id: string }>;
@@ -35,18 +30,6 @@ export default async function BookPage({ params }: BookPageProps) {
         </div>
       </main>
     </>
-    // <div classNameName="book-page-container new-design">
-    //   <div classNameName="book-header">
-    //     <Link href="/" classNameName="book-page-btn">
-    //       <span classNameName="material-icons">back</span>
-    //     </Link>
-    //     <BookCategory book={book} />
-    //   </div>
-    //   <div classNameName="book-main-content new-main-content">
-    //     <BookInfoPanel book={book} />
-    //     <BookSummaryPanel book={book} />
-    //   </div>
-    // </div>
   );
 }
 

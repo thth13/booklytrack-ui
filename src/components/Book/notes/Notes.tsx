@@ -1,6 +1,5 @@
 'use client';
 
-import { useBook } from '@/src/context/BookContext';
 import { useUserProfile } from '@/src/context/UserProfileContext';
 import { Book, BookNotes } from '@/src/types';
 import { getBookSummary, removeSummaryItem, updateSummaryItem } from '../../../lib/api';
@@ -14,7 +13,6 @@ const BookNotesSection = ({ book }: { book: Book }) => {
   const [showAddNoteForm, setShowAddNoteForm] = useState(false);
 
   const { profile } = useUserProfile();
-  const { currentCategory } = useBook();
 
   const handleDeleteSummary = async (indexToDelete: number) => {
     if (notes && profile?.user) {

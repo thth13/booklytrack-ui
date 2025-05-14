@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import './style.css';
 import { cookies } from 'next/headers';
 import { UserProfile } from '@/src/types';
 import { getProfile } from '@/src/lib/api';

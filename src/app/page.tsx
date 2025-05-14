@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen, faPenToSquare, faRobot } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
+import landingImage from '@/public/landingImage.png';
 
 export default function Home() {
   return (
@@ -61,9 +63,11 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <img
+              <Image
+                width={0}
+                height={0}
                 className="w-full h-auto rounded-lg shadow-xl"
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/fc34c1fd78-8444127672bb1820d1b1.png"
+                src={landingImage}
                 alt="3D illustration of books floating with AI particles and digital elements, modern minimal style"
               />
             </div>
