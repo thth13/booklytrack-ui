@@ -13,11 +13,11 @@ const BooksList = ({ book }: BooksListProps) => (
     href={`/books/${book.googleId}`}
     className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow flex h-[160px]"
   >
-    {book.imageLinks.smallThumbnail && (
+    {book.imageLinks.thumbnail && (
       <Image
         width={107}
         height={160}
-        src={book.imageLinks.smallThumbnail}
+        src={book.imageLinks.thumbnail}
         alt={book.title}
         className="w-[107px] h-[160px] object-cover"
       />

@@ -25,7 +25,7 @@ export default function BookSummaryPanel({ book }: BookTabsPanelProps) {
 
     if (profile?.user) {
       await addBookSummmary(profile?.user, book._id, summaryField);
-      setSummary((prev) => [...prev, { content: summaryField }]);
+      // setSummary((prev) => [...prev, { content: summaryField }]);
       setSummaryField('');
     }
   };

@@ -1,4 +1,5 @@
 import { getBookRecentSummaries } from '@/src/lib/api';
+import { formatDate } from '@/src/lib/utils';
 import { BookNotes } from '@/src/types';
 import { faBookOpen, faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,17 +10,6 @@ interface CurrentlyReadingProps {
 
 const RecentNotes = async ({ userId }: CurrentlyReadingProps) => {
   const notes = await fetchRecentNotes(userId);
-
-  const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-EN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
   if (!notes || notes.length === 0) {
     return (

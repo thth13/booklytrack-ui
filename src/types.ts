@@ -22,7 +22,7 @@ export interface Book {
 export interface BookNotes {
   _id?: string;
   content: string;
-  createdAt?: Date;
+  createdAt: Date;
 }
 
 export interface UserProfile {
@@ -43,6 +43,7 @@ export enum ReadCategory {
   READING = 'reading',
   FINISHED = 'finished',
   WANTS_READ = 'wantsToRead',
+  DELETE = 'delete',
 }
 
 export enum BookEntryActionType {
