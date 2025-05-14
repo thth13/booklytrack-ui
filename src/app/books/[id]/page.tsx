@@ -8,7 +8,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import './style.css';
 import Header from '@/src/components/Header';
 import BookSection from '@/src/components/Book/BookInfo';
-import BookNotesSection from '@/src/components/Book/Notes';
+import BookNotesSection from '@/src/components/Book/notes/Notes';
 import BookAiPracticle from '@/src/components/Book/BookAiPracticle';
 
 type BookPageProps = {
