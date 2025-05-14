@@ -21,7 +21,7 @@ const NoteItem = ({ item, deleteSummary, onEdit }: NoteItemProps) => {
       ) : (
         <div className="flex justify-between items-start mb-3">
           <div>
-            <p className="text-gray-600">{item.content}</p>
+            <div className="text-gray-600" dangerouslySetInnerHTML={{ __html: item.content }} />
             <div className="mt-4 flex items-center text-sm text-gray-500">
               <i className="fa-regular fa-clock mr-2"></i>
               <FontAwesomeIcon icon={faClock} className="mr-2" />

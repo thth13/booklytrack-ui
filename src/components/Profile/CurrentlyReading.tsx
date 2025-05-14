@@ -93,12 +93,12 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
       <div id="books-carousel" className="relative">
         <div className="flex items-start gap-8">
           <div className="w-48">
-            {books[current].imageLinks.thumbnail && (
+            {books[current].imageLinks.small && (
               <Image
                 width={180}
                 height={270}
-                className="w-full h-64 object-cover rounded-lg shadow-lg"
-                src={books[current].imageLinks.thumbnail}
+                className="w-full object-cover rounded-lg shadow-lg"
+                src={books[current].imageLinks.small}
                 alt="book cover"
               />
             )}
