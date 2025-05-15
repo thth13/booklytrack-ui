@@ -18,13 +18,15 @@ const Header = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <button
-              className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center"
-              onClick={auth?.logout}
-            >
-              <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
-              Logout
-            </button>
+            {auth?.userId && (
+              <button
+                className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center"
+                onClick={auth?.logout}
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </div>

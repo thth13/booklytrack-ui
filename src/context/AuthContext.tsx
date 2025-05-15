@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     Cookies.set('refreshToken', refreshToken, { path: '/' });
     Cookies.set('userId', id, { path: '/' });
 
-    refreshProfile();
+    setUserId(id);
 
     router.push(`/profile/${id}`);
   };
