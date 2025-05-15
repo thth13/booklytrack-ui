@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import Link from '@/src/components/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';

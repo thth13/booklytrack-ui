@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/src/components/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen, faPenToSquare, faRobot } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';

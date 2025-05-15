@@ -1,7 +1,7 @@
 import React from 'react';
 import { Book } from '../types';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from '@/src/components/Link';
 
 interface BooksListProps {
   book: Book;

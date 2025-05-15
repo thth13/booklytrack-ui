@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen, faPenToSquare, faRobot } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
+import Link from '@/src/components/Link';
 
 const Actions = () => (
   <section className="grid grid-cols-3 gap-6 mb-8 ">

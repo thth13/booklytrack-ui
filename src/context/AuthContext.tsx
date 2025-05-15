@@ -1,4 +1,5 @@
 'use client';
+import NProgress from 'nprogress';
 
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -52,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
   const signIn = (userData: any) => {
     const { id, accessToken, refreshToken } = userData;
+    NProgress.start();
 
     Cookies.set('accessToken', accessToken, { path: '/' });
     Cookies.set('refreshToken', refreshToken, { path: '/' });

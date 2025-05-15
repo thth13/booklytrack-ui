@@ -1,6 +1,7 @@
 import { API_URL } from '@/src/constants';
 import { UserProfile } from '../../types';
 import api from '../clientAxios';
+import nProgress from 'nprogress';
 
 export const getProfile = async (id: string): Promise<UserProfile> => {
   try {
@@ -19,6 +20,7 @@ export const editProfile = async (id: string, profile: FormData): Promise<UserPr
         'Content-Type': 'multipart/form-data',
       },
     });
+    nProgress.start();
 
     return res.data;
   } catch (err: any) {

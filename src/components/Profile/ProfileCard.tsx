@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/src/components/Link';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
@@ -28,7 +28,6 @@ const ProfileCard = ({ isMyProfile, user }: ProfileCardProps) => (
       {isMyProfile && (
         <Link
           href="/profile/edit"
-          id="btn-edit-profile"
           className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 mt-4 inline-flex items-center justify-center"
         >
           <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />

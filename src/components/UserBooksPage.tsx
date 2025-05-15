@@ -1,5 +1,5 @@
 import { getReadBooks } from '@/src/lib/api';
-import Link from 'next/link';
+import Link from '@/src/components/Link';
 import BooksList from '@/src/components/BooksList';
 import { Book, ReadCategory } from '../types';
 import Footer from './Footer';

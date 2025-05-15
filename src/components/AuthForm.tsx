@@ -80,7 +80,6 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
       const serverErrors = error.response.data;
 
       setErrors(serverErrors);
-    } finally {
       setLoading(false);
     }
   };

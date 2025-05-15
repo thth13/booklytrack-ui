@@ -3,6 +3,7 @@ import { AuthProvider } from '../context/AuthContext';
 import { ThemeProvider } from '@/src/context/ThemeContext';
 import { UserProfileProvider } from '../context/UserProfileContext';
 import { BookProvider } from '../context/BookContext';
+import ProgressBar from './ProgressBar';
 import './globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -72,7 +73,10 @@ export default function RootLayout({
         <ThemeProvider>
           <UserProfileProvider>
             <BookProvider>
-              <AuthProvider>{children}</AuthProvider>
+              <AuthProvider>
+                <ProgressBar />
+                {children}
+              </AuthProvider>
             </BookProvider>
           </UserProfileProvider>
         </ThemeProvider>
