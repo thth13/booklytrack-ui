@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NProgress from 'nprogress';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 type Props = {
   href: string;
@@ -15,20 +15,15 @@ type Props = {
 
 export default function LinkWithProgress({ href, children, className, passHref, legacyBehavior }: Props) {
   const pathname = usePathname();
-  const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
     if (pathname !== href) {
       NProgress.start();
-      setLoading(true);
     }
   };
 
   useEffect(() => {
-    if (loading) {
-      NProgress.done();
-      setLoading(false);
-    }
+    NProgress.done();
   }, [pathname]);
 
   return (

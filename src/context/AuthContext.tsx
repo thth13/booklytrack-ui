@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginUser, registerUser } from '../lib/api';
 import { api } from '../lib/clientAxios';
-import { useUserProfile } from './UserProfileContext';
 
 interface AuthContextType {
   userId: string;
@@ -27,7 +26,6 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userId, setUserId] = useState<string>('');
   const router = useRouter();
-  const { refreshProfile } = useUserProfile();
 
   useEffect(() => {
     const cookiesUserId = Cookies.get('userId');
@@ -66,6 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     setUserId('');
+    NProgress.start();
 
     const cookiesToRemove = ['accessToken', 'refreshToken', 'userId'];
     cookiesToRemove.forEach((cookie) => Cookies.remove(cookie, { path: '/' }));
