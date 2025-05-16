@@ -2,7 +2,6 @@
 import NProgress from 'nprogress';
 
 import { createContext, useState, ReactNode, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginUser, registerUser } from '../lib/api';
 import { api } from '../lib/clientAxios';
@@ -25,7 +24,6 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userId, setUserId] = useState<string>('');
-  const router = useRouter();
 
   useEffect(() => {
     const cookiesUserId = Cookies.get('userId');
@@ -59,7 +57,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     setUserId(id);
 
-    router.push(`/profile/${id}`);
+    // For update cookie on the ssr
+    window.location.reload();
   };
 
   const logout = () => {
@@ -71,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     api.defaults.headers.common['Authorization'] = '';
 
-    router.push('/');
+    window.location.href = '/';
   };
 
   return <AuthContext.Provider value={{ userId, authUser, logout }}>{children}</AuthContext.Provider>;

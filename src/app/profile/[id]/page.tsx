@@ -31,17 +31,21 @@ export default async function Profile({ params }: ProfilePageProps) {
 
   return (
     <>
-      <Header />
+      <Header noLink />
       <main className="pt-20 min-h-[800px] bg-gray-50">
         <div className="container mx-auto px-6 py-8">
           <div className="flex gap-8">
             <div className="w-80 space-y-6">
               <ProfileCard isMyProfile={isMyProfile} user={user} />
-              <AiPracticle userId={user.user} />
+              {isMyProfile && <AiPracticle userId={user.user} />}
             </div>
             <div className="flex-1">
-              <Actions />
-              <CurrentlyReading userId={user.user} />
+              {isMyProfile && (
+                <>
+                  <Actions />
+                  <CurrentlyReading userId={user.user} />
+                </>
+              )}
               <RecentNotes userId={user.user} />
             </div>
           </div>

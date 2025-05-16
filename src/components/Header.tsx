@@ -5,7 +5,7 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import { useContext } from 'react';
 
-const Header = () => {
+const Header = ({ noLink }: { noLink?: boolean }) => {
   const auth = useContext(AuthContext);
 
   return (
@@ -13,9 +13,18 @@ const Header = () => {
       <div className="container mx-auto px-6 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
-              BooklyTrack
-            </Link>
+            {noLink ? (
+              <span
+                className="text-2xl font-bold text-blue-600 cursor-pointer"
+                onClick={() => window.location.reload()}
+              >
+                BooklyTrack
+              </span>
+            ) : (
+              <Link href="/" className="text-2xl font-bold text-blue-600">
+                BooklyTrack
+              </Link>
+            )}
           </div>
           <div className="flex items-center space-x-4">
             {auth?.userId && (

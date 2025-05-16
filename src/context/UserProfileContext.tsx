@@ -8,13 +8,11 @@ import { useBook } from './BookContext';
 
 interface UserProfileContextType {
   profile: UserProfile | null;
-  refreshProfile: () => Promise<void>;
   addBookToProfile: (bookId: string, userId: string, newCategory: ReadCategory, currentCategory?: ReadCategory) => void;
 }
 
 export const UserProfileContext = createContext<UserProfileContextType>({
   profile: null,
-  refreshProfile: async () => {},
   addBookToProfile: () => {},
 });
 
@@ -22,13 +20,9 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const { setCurrentCategory } = useBook();
 
-  const fetchProfile = async () => {
-    const userId = Cookies.get('userId');
-
-    if (userId) {
-      const data = await getProfile(userId);
-      setProfile(data);
-    }
+  const fetchProfile = async (userId: string) => {
+    const data = await getProfile(userId);
+    setProfile(data);
   };
 
   const addBookToProfile = async (
@@ -44,14 +38,14 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   useEffect(() => {
-    fetchProfile();
+    const userId = Cookies.get('userId');
+
+    if (userId) {
+      fetchProfile(userId);
+    }
   }, []);
 
-  return (
-    <UserProfileContext.Provider value={{ profile, addBookToProfile, refreshProfile: fetchProfile }}>
-      {children}
-    </UserProfileContext.Provider>
-  );
+  return <UserProfileContext.Provider value={{ profile, addBookToProfile }}>{children}</UserProfileContext.Provider>;
 };
 
 export const useUserProfile = () => useContext(UserProfileContext);
