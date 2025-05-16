@@ -1,8 +1,8 @@
 'use client';
 import { useState, useContext, ChangeEvent, FormEvent } from 'react';
+import { CredentialResponse, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthContext } from '@/src/context/AuthContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
+import { GOOGLE_CLIENT_ID } from '../constants';
 
 interface FormData {
   email: string;
@@ -25,7 +25,7 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
   const [isLogin, setIsLogin] = useState<boolean>(isLoginProp);
   const auth = useContext(AuthContext);
 
-  const { authUser } = auth;
+  const { authUser, googleLogin } = auth;
 
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -81,6 +81,12 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
 
       setErrors(serverErrors);
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
+    if (credentialResponse.credential) {
+      await googleLogin(credentialResponse.credential);
     }
   };
 
@@ -201,10 +207,22 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
                     </div>
                   </div>
                   <div className="mt-6 grid grid-cols-1 ">
-                    <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                      <GoogleLogin
+                        onSuccess={(credentialResponse) => {
+                          handleGoogleLogin(credentialResponse);
+                        }}
+                        onError={() => {
+                          console.log('Login Failed');
+                        }}
+                        shape="rectangular"
+                      />
+                    </GoogleOAuthProvider>
+
+                    {/* <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                       <FontAwesomeIcon icon={faGoogle} className="fa-google text-[#4285F4] mr-2" />
                       <span>Sign in with Google</span>
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </form>

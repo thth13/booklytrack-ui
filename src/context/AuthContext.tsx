@@ -3,18 +3,21 @@ import NProgress from 'nprogress';
 
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { loginUser, registerUser } from '../lib/api';
+import { googleLoginUser, loginUser, registerUser } from '../lib/api';
 import { api } from '../lib/clientAxios';
 
 interface AuthContextType {
   userId: string;
   authUser: (email: string, password: string, isLogin: boolean) => Promise<void>;
+  googleLogin: (token: string) => Promise<void>;
+
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   userId: '',
   authUser: async () => {},
+  googleLogin: async () => {},
   logout: () => {},
 });
 
@@ -32,6 +35,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [userId]);
 
+  const googleLogin = async (token: string) => {
+    try {
+      const data = await googleLoginUser(token);
+      signIn(data);
+    } catch (err) {
+      throw err;
+    }
+  };
+
   const authUser = async (email: string, password: string, isLogin: boolean) => {
     try {
       let data;
@@ -47,6 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       throw err;
     }
   };
+
   const signIn = (userData: any) => {
     const { id, accessToken, refreshToken } = userData;
     NProgress.start();
@@ -73,5 +86,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     window.location.href = '/';
   };
 
-  return <AuthContext.Provider value={{ userId, authUser, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ userId, authUser, googleLogin, logout }}>{children}</AuthContext.Provider>;
 };
