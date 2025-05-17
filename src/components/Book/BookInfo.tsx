@@ -38,7 +38,9 @@ const BookSection = ({ book }: { book: Book }) => {
           </div>
           <div className="mt-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-3">About the Book</h2>
-            <div className="text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: book.description }} />
+            {book.description && (
+              <div className="text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: book.description }} />
+            )}
           </div>
           <div className="mt-8 grid grid-cols-3 gap-4">
             <div className="p-4 bg-gray-50 rounded-lg">

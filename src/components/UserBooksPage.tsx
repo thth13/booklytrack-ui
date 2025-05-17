@@ -14,9 +14,9 @@ export default async function UserBooksPage({ userId, category }: UserBooksPageP
   const books = await fetchBooks(userId, category);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="pt-20 min-h-[800px] bg-gray-50">
+      <main className="flex-1 pt-20 min-h-[800px] bg-gray-50">
         <div className="container mx-auto px-6 py-8">
           <section id="books-filter" className="mb-8">
             <div className="inline-flex bg-white rounded-xl shadow-sm p-1">
@@ -55,7 +55,7 @@ export default async function UserBooksPage({ userId, category }: UserBooksPageP
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
