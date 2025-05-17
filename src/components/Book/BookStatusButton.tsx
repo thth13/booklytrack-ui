@@ -1,3 +1,4 @@
+'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen, faCheck, faCheckDouble, faListCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useContext, useEffect } from 'react';

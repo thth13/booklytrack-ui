@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { Book } from '@/src/types';
 import noBookImage from '@/public/noBookimage.webp';
