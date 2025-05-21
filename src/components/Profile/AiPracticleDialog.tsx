@@ -1,5 +1,5 @@
 'use client';
-import { API_URL } from '@/src/constants';
+import { SOCKET_URL } from '@/src/constants';
 import { getBookRecentSummaries } from '@/src/lib/api';
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
@@ -19,10 +19,12 @@ interface QuizResult {
 
 interface QuiPageProps {
   userId: string;
+  endSession: () => void;
 }
 
-export default function QuizPage({ userId }: QuiPageProps) {
+export default function QuizPage({ userId, endSession }: QuiPageProps) {
   const [notes, setNotes] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [quizStarted, setQuizStarted] = useState<boolean>(false);
   const [currentQuestion, setCurrentQuestion] = useState<QuestionData | null>(null);
   const [userAnswer, setUserAnswer] = useState<string>('');
@@ -33,7 +35,7 @@ export default function QuizPage({ userId }: QuiPageProps) {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io(API_URL);
+    socketRef.current = io(SOCKET_URL);
 
     socketRef.current.on('connect', () => {
       setIsConnected(true);
@@ -46,11 +48,13 @@ export default function QuizPage({ userId }: QuiPageProps) {
     socketRef.current.on('question', (data: QuestionData) => {
       setCurrentQuestion(data);
       setUserAnswer('');
+      setLoading(false);
     });
 
     socketRef.current.on('quiz_completed', (data: QuizResult) => {
       setQuizResult(data);
       setQuizStarted(false);
+      setLoading(false);
     });
 
     socketRef.current.on('error', (err: { message: string }) => {
@@ -87,6 +91,8 @@ export default function QuizPage({ userId }: QuiPageProps) {
       return;
     }
 
+    setLoading(true);
+
     if (socketRef.current) {
       socketRef.current.emit('submit_answer', {
         answer: userAnswer.trim(),
@@ -118,61 +124,88 @@ export default function QuizPage({ userId }: QuiPageProps) {
     fetchRecentSummaries();
   }, [userId]);
 
+  useEffect(() => {
+    if (notes) {
+      startQuiz();
+    }
+  }, [notes]);
+
+  const handleEndSession = () => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+      setIsConnected(false);
+      setQuizResult(null);
+      endSession();
+    }
+  };
+
   return (
-    <div className="container mx-auto p-4 max-w-2xl">
-      <h1 className="text-2xl font-bold mb-6">Book Quiz</h1>
+    <>
+      <>
+        {quizStarted && (
+          <section id="active-ai-session" className="bg-blue-600 rounded-lg p-6 animate-fade-in">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-medium text-white">Active AI Session</h2>
+                <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm transition-all duration-300 animate-pulse">
+                  In Progress
+                </span>
+              </div>
 
-      {!quizStarted ? (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <button
-            onClick={startQuiz}
-            disabled={!isConnected}
-            className={`px-4 py-2 rounded text-white ${
-              isConnected ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
-            }`}
-          >
-            {isConnected ? 'Start Quiz' : 'Connecting...'}
-          </button>
-        </div>
-      ) : (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          {!currentQuestion && quizStarted && (
-            <div className="text-center py-10">
-              <p className="text-gray-500 text-lg">Ожидание первого вопроса...</p>
-              {/* Можно добавить спиннер или другую анимацию загрузки здесь */}
-            </div>
-          )}
-          {currentQuestion && (
-            <>
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 mb-1">
-                  Question {currentQuestion.questionNumber} of {currentQuestion.totalQuestions}
+              <div className="bg-white rounded-lg p-4 shadow-lg transition-all duration-300 animate-fade-in">
+                <p className="text-gray-700 mb-4 transition-all duration-300">
+                  {currentQuestion ? currentQuestion.question : '  Waiting for the first question...'}
                 </p>
-                <h2 className="text-xl font-semibold mb-4">{currentQuestion.question}</h2>
 
-                {currentQuestion.previousAnswerFeedback && (
-                  <div className="mb-4 p-3 bg-gray-50 rounded">
+                {currentQuestion && currentQuestion.previousAnswerFeedback && (
+                  <div className="mb-4 p-3 bg-gray-50 rounded animate-fade-in">
                     <p className="font-medium">Previous feedback:</p>
                     <p>{currentQuestion.previousAnswerFeedback}</p>
                     <p className="mt-1">Score: {currentQuestion.previousAnswerScore}/10</p>
                   </div>
                 )}
 
-                <textarea
-                  value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
-                  className="w-full p-2 border rounded h-24"
-                  placeholder="Your answer..."
-                />
+                {currentQuestion && (
+                  <>
+                    <textarea
+                      value={userAnswer}
+                      onChange={(e) => setUserAnswer(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 h-24 resize-none transition-all duration-300"
+                      placeholder="Type your answer here..."
+                    />
+
+                    <div className="flex justify-between mt-4 gap-2">
+                      <button
+                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
+                        onClick={submitAnswer}
+                      >
+                        {loading ? 'Submitting...' : 'Submit Answer'}
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
 
-              <button onClick={submitAnswer} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                Submit Answer
+              <div className="flex items-center justify-between text-white/90 text-sm">
+                <span>
+                  Question {currentQuestion?.questionNumber ?? 1} of {currentQuestion?.totalQuestions ?? 5}
+                </span>
+                {/* <span>
+                  Time:
+                </span> */}
+              </div>
+
+              <button
+                className="w-full bg-blue-500 px-4 py-2.5 rounded-lg hover:bg-blue-700 text-white font-medium transition-all duration-200"
+                onClick={handleEndSession}
+              >
+                End Session
               </button>
-            </>
-          )}
-        </div>
-      )}
+            </div>
+            {/* {error && <div className="mt-4 p-3 bg-red-100 text-red-700 rounded animate-fade-in">{error}</div>} */}
+          </section>
+        )}
+      </>
 
       {quizResult && (
         <div className="mt-6 p-4 bg-blue-50 rounded-lg">
@@ -181,10 +214,7 @@ export default function QuizPage({ userId }: QuiPageProps) {
             Your score: {quizResult.totalScore} out of {quizResult.maxPossibleScore}
           </p>
           <button
-            onClick={() => {
-              setQuizStarted(false);
-              setQuizResult(null);
-            }}
+            onClick={handleEndSession}
             className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             Start New Quiz
@@ -195,6 +225,6 @@ export default function QuizPage({ userId }: QuiPageProps) {
       {error && <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
 
       <div className="mt-4 text-sm text-gray-500">Connection status: {isConnected ? 'Connected' : 'Disconnected'}</div>
-    </div>
+    </>
   );
 }
