@@ -216,6 +216,10 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
                           console.log('Login Failed');
                         }}
                         shape="rectangular"
+                        width="100%"
+                        text="signin_with"
+                        type="standard"
+                        auto_select={false}
                       />
                     </GoogleOAuthProvider>
 
