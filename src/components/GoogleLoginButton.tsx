@@ -10,6 +10,7 @@ const GoogleLoginButton = ({ googleLogin }: GoogleLoginButtonProps) => {
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (codeResponse: CodeResponse) => googleLogin(codeResponse),
     flow: 'auth-code',
+    redirect_uri: 'postmessage',
   });
 
   return (
