@@ -4,12 +4,12 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { googleLoginUser, loginUser, registerUser } from '../lib/api';
 import { api } from '../lib/clientAxios';
+import { CodeResponse } from '@react-oauth/google';
 
 interface AuthContextType {
   userId: string;
   authUser: (email: string, password: string, isLogin: boolean) => Promise<void>;
-  googleLogin: (token: string) => Promise<void>;
-
+  googleLogin: (codeResponse: CodeResponse) => Promise<void>;
   logout: () => void;
 }
 
@@ -34,9 +34,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [userId]);
 
-  const googleLogin = async (token: string) => {
+  const googleLogin = async (codeResponse: CodeResponse) => {
     try {
-      const data = await googleLoginUser(token);
+      const data = await googleLoginUser(codeResponse);
       signIn(data);
     } catch (err) {
       throw err;

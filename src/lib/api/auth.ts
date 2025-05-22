@@ -1,5 +1,6 @@
 import { API_URL } from '@/src/constants';
 import { api } from '../clientAxios';
+import { CodeResponse } from '@react-oauth/google';
 
 interface AuthResponse {
   accessToken: string;
@@ -20,10 +21,13 @@ export const loginUser = async (email: string, password: string): Promise<AuthRe
   }
 };
 
-export const googleLoginUser = async (token: string): Promise<AuthResponse> => {
+export const googleLoginUser = async (codeResponse: CodeResponse): Promise<AuthResponse> => {
   try {
     const res = await api.post(`${API_URL}/user/google`, {
-      token,
+      codeResponse: {
+        ...codeResponse,
+        redirectUri: window.location.href,
+      },
     });
 
     return res.data;

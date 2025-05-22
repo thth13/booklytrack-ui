@@ -1,8 +1,9 @@
 'use client';
 import { useState, useContext, ChangeEvent, FormEvent } from 'react';
-import { CredentialResponse, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthContext } from '@/src/context/AuthContext';
 import { GOOGLE_CLIENT_ID } from '../constants';
+import GoogleLoginButton from './GoogleLoginButton';
 
 interface FormData {
   email: string;
@@ -81,12 +82,6 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
 
       setErrors(serverErrors);
       setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
-    if (credentialResponse.credential) {
-      await googleLogin(credentialResponse.credential);
     }
   };
 
@@ -208,25 +203,8 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
                   </div>
                   <div className="mt-6 grid grid-cols-1 ">
                     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                      <GoogleLogin
-                        onSuccess={(credentialResponse) => {
-                          handleGoogleLogin(credentialResponse);
-                        }}
-                        onError={() => {
-                          console.log('Login Failed');
-                        }}
-                        shape="rectangular"
-                        width="100%"
-                        text="signin_with"
-                        type="standard"
-                        auto_select={false}
-                      />
+                      <GoogleLoginButton googleLogin={googleLogin} />
                     </GoogleOAuthProvider>
-
-                    {/* <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                      <FontAwesomeIcon icon={faGoogle} className="fa-google text-[#4285F4] mr-2" />
-                      <span>Sign in with Google</span>
-                    </button> */}
                   </div>
                 </div>
               </form>
