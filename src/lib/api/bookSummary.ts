@@ -12,7 +12,7 @@ export async function getBookSummary(userId: string, bookId: string) {
   }
 }
 
-export async function getBookRecentSummaries(userId: string) {
+export async function getRecentNotes(userId: string) {
   try {
     const res = await api.get(`${API_URL}/book-summary/recent/${userId}`);
 

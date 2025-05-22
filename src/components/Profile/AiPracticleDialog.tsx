@@ -1,6 +1,6 @@
 'use client';
 import { SOCKET_URL } from '@/src/constants';
-import { getBookRecentSummaries } from '@/src/lib/api';
+import { useUserProfile } from '@/src/context/UserProfileContext';
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
 
@@ -23,6 +23,7 @@ interface QuiPageProps {
 }
 
 export default function QuizPage({ userId, endSession }: QuiPageProps) {
+  const { recentNotes } = useUserProfile();
   const [notes, setNotes] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [quizStarted, setQuizStarted] = useState<boolean>(false);
@@ -102,27 +103,8 @@ export default function QuizPage({ userId, endSession }: QuiPageProps) {
   };
 
   useEffect(() => {
-    if (!userId) return;
-
-    const fetchRecentSummaries = async () => {
-      try {
-        const data = await getBookRecentSummaries(userId);
-
-        if (data && Array.isArray(data)) {
-          const notesContent = data.map((note) => note.content);
-
-          setNotes(notesContent);
-        } else {
-          setNotes([]);
-        }
-      } catch (error) {
-        console.error('Error fetching recent summaries:', error);
-        setNotes([]);
-      }
-    };
-
-    fetchRecentSummaries();
-  }, [userId]);
+    setNotes(recentNotes.map((note) => note.content));
+  }, [recentNotes]);
 
   useEffect(() => {
     if (notes) {

@@ -1,14 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AiPracticleDialog from './AiPracticleDialog';
+import { useUserProfile } from '@/src/context/UserProfileContext';
 
 interface QuiPageProps {
   userId: string;
 }
 
 const AiPracticle = ({ userId }: QuiPageProps) => {
+  const { recentNotes } = useUserProfile();
   const [active, setActive] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    if (recentNotes.length >= 5) {
+      setDisabled(false);
+    }
+  }, [recentNotes]);
 
   return !active ? (
     <section id="ai-practice-sidebar" className="bg-blue-600 rounded-lg p-6">
@@ -17,10 +26,16 @@ const AiPracticle = ({ userId }: QuiPageProps) => {
         <p className="text-white/90">
           Ready to test your knowledge? Start a short quiz with 5 questions based on your latest notes.
         </p>
+        {disabled && <p className="text-white/90">You need at least 5 notes for any book to start a session</p>}
         <div className="space-y-3">
           <button
             onClick={() => setActive(true)}
-            className="w-full bg-white px-4 py-2.5 rounded-lg hover:bg-gray-100 text-blue-600 font-medium"
+            disabled={disabled}
+            className={`w-full px-4 py-2.5 rounded-lg font-medium ${
+              disabled
+                ? 'bg-gray-500 text-white opacity-50 cursor-not-allowed'
+                : 'bg-white text-blue-600 hover:bg-gray-100'
+            }`}
           >
             Start Session
           </button>

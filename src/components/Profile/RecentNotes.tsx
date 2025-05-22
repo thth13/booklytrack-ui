@@ -1,4 +1,4 @@
-import { getBookRecentSummaries } from '@/src/lib/api';
+import { getRecentNotes } from '@/src/lib/api';
 import { formatDate } from '@/src/lib/utils';
 import { BookNotes } from '@/src/types';
 import { faBookOpen, faClock } from '@fortawesome/free-solid-svg-icons';
@@ -48,7 +48,7 @@ const RecentNotes = async ({ userId }: CurrentlyReadingProps) => {
 
 async function fetchRecentNotes(userId: string): Promise<BookNotes[] | null> {
   try {
-    const data = await getBookRecentSummaries(userId);
+    const data = await getRecentNotes(userId);
 
     return data;
   } catch (err) {
