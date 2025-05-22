@@ -1,5 +1,5 @@
 'use client';
-import { API_URL, SOCKET_URL } from '@/src/constants';
+import { SOCKET_URL } from '@/src/constants';
 import { getBookRecentSummaries } from '@/src/lib/api';
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
@@ -19,9 +19,10 @@ interface QuizResult {
 
 interface QuiPageProps {
   userId: string;
+  endSession: () => void;
 }
 
-export default function QuizPage({ userId }: QuiPageProps) {
+export default function QuizPage({ userId, endSession }: QuiPageProps) {
   const [notes, setNotes] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [quizStarted, setQuizStarted] = useState<boolean>(false);
@@ -129,6 +130,15 @@ export default function QuizPage({ userId }: QuiPageProps) {
     }
   }, [notes]);
 
+  const handleEndSession = () => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+      setIsConnected(false);
+      setQuizResult(null);
+      endSession();
+    }
+  };
+
   return (
     <>
       <>
@@ -169,13 +179,7 @@ export default function QuizPage({ userId }: QuiPageProps) {
                         className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
                         onClick={submitAnswer}
                       >
-                        {!loading ? (
-                          <>
-                            <svg className="mr-3 size-5 animate-spin" viewBox="0 0 24 24"></svg>
-                          </>
-                        ) : (
-                          'Submit Answer'
-                        )}
+                        {loading ? 'Submitting...' : 'Submit Answer'}
                       </button>
                     </div>
                   </>
@@ -193,10 +197,7 @@ export default function QuizPage({ userId }: QuiPageProps) {
 
               <button
                 className="w-full bg-blue-500 px-4 py-2.5 rounded-lg hover:bg-blue-700 text-white font-medium transition-all duration-200"
-                onClick={() => {
-                  setQuizStarted(false);
-                  setQuizResult(null);
-                }}
+                onClick={handleEndSession}
               >
                 End Session
               </button>
@@ -213,10 +214,7 @@ export default function QuizPage({ userId }: QuiPageProps) {
             Your score: {quizResult.totalScore} out of {quizResult.maxPossibleScore}
           </p>
           <button
-            onClick={() => {
-              setQuizStarted(false);
-              setQuizResult(null);
-            }}
+            onClick={handleEndSession}
             className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             Start New Quiz
@@ -225,6 +223,8 @@ export default function QuizPage({ userId }: QuiPageProps) {
       )}
 
       {error && <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
+
+      <div className="mt-4 text-sm text-gray-500">Connection status: {isConnected ? 'Connected' : 'Disconnected'}</div>
     </>
   );
 }
