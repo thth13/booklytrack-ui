@@ -1,6 +1,5 @@
 'use client';
 import NProgress from 'nprogress';
-
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { googleLoginUser, loginUser, registerUser } from '../lib/api';
