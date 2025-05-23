@@ -8,21 +8,21 @@ import { useBook } from './BookContext';
 
 interface UserProfileContextType {
   profile: UserProfile | null;
-  recentNotes: BookNotes[];
+  recentNotes: BookNotes[] | null;
   fetchRecentNotes: (userId: string) => void;
   addBookToProfile: (bookId: string, userId: string, newCategory: ReadCategory, currentCategory?: ReadCategory) => void;
 }
 
 export const UserProfileContext = createContext<UserProfileContextType>({
   profile: null,
-  recentNotes: [],
+  recentNotes: null,
   fetchRecentNotes: () => {},
   addBookToProfile: () => {},
 });
 
 export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [recentNotes, setRecentNotes] = useState<BookNotes[]>([]);
+  const [recentNotes, setRecentNotes] = useState<BookNotes[] | null>(null);
   const { setCurrentCategory } = useBook();
 
   const fetchProfile = async (userId: string) => {

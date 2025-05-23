@@ -103,7 +103,9 @@ export default function QuizPage({ userId, endSession }: QuiPageProps) {
   };
 
   useEffect(() => {
-    setNotes(recentNotes.map((note) => note.content));
+    if (recentNotes) {
+      setNotes(recentNotes.map((note) => note.content));
+    }
   }, [recentNotes]);
 
   useEffect(() => {
