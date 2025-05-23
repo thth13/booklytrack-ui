@@ -9,12 +9,13 @@ const BookSection = ({ book }: { book: Book }) => {
       <div className="flex gap-8">
         <div className="w-1/3 max-w-[300px]">
           <Image
-            className="w-full h-auto rounded-lg shadow-lg"
-            src={book.imageLinks.large ? book.imageLinks.large : noBookImage}
+            className="w-full object-cover h-auto rounded-lg shadow-lg"
+            src={book.imageLinks && book.imageLinks.medium ? book.imageLinks.medium : noBookImage}
             alt={book.title}
-            width={0}
-            height={0}
+            width={500}
+            height={700}
             sizes="80vw"
+            loading="lazy"
           />
           <BookStatusButton book={book} />
         </div>

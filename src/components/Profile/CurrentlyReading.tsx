@@ -73,26 +73,28 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
     <section id="current-book" className="bg-white rounded-xl p-8 shadow-sm mb-8">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-2xl font-medium text-gray-800">Currently Reading</h3>
-        <div className="flex gap-3">
-          <button
-            id="prev-book"
-            className="p-3 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
-            onClick={prevBook}
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <button
-            id="next-book"
-            className="p-3 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
-            onClick={nextBook}
-          >
-            <FontAwesomeIcon icon={faChevronRight} />
-          </button>
-        </div>
+        {books.length > 1 && (
+          <div className="flex gap-3">
+            <button
+              id="prev-book"
+              className="p-3 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+              onClick={prevBook}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <button
+              id="next-book"
+              className="p-3 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+              onClick={nextBook}
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+        )}
       </div>
       <div id="books-carousel" className="relative">
         <div className="flex items-start gap-8">
-          <div className="w-48">
+          <Link href={`/books/${books[current].googleId}`} className="w-48">
             {books[current].imageLinks.small && (
               <Image
                 width={180}
@@ -100,12 +102,15 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
                 className="w-full object-cover rounded-lg shadow-lg"
                 src={books[current].imageLinks.small}
                 alt="book cover"
+                loading="lazy"
               />
             )}
-          </div>
+          </Link>
           <div className="flex-1">
-            <h4 className="text-xl font-medium text-gray-800 mb-2">{books[current].title}</h4>
-            <p className="text-gray-600 mb-4">by {books[current].authors?.join(', ') || '—'}</p>
+            <Link href={`/books/${books[current].googleId}`}>
+              <h4 className="text-xl font-medium text-gray-800 mb-2">{books[current].title}</h4>
+              <p className="text-gray-600 mb-4">by {books[current].authors?.join(', ') || '—'}</p>
+            </Link>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
