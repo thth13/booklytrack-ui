@@ -1,4 +1,5 @@
 'use client';
+
 import { SOCKET_URL } from '@/src/constants';
 import { useUserProfile } from '@/src/context/UserProfileContext';
 import { useState, useEffect, useRef } from 'react';
@@ -19,21 +20,51 @@ interface QuizResult {
 
 interface QuiPageProps {
   userId: string;
+  isStartQuiz: boolean;
   endSession: () => void;
 }
 
-export default function QuizPage({ userId, endSession }: QuiPageProps) {
+export default function QuizPage({ userId, endSession, isStartQuiz }: QuiPageProps) {
   const { recentNotes } = useUserProfile();
-  const [notes, setNotes] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [quizStarted, setQuizStarted] = useState<boolean>(false);
   const [currentQuestion, setCurrentQuestion] = useState<QuestionData | null>(null);
   const [userAnswer, setUserAnswer] = useState<string>('');
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
-  const [error, setError] = useState<string>('');
   const [isConnected, setIsConnected] = useState<boolean>(false);
-
+  const [error, setError] = useState<string>('');
+  const [waitResponse, setWaitResponse] = useState<boolean>(false);
   const socketRef = useRef<Socket | null>(null);
+
+  const submitAnswer = () => {
+    if (!userAnswer.trim()) {
+      setError('Please enter your answer');
+      return;
+    }
+    setWaitResponse(true);
+    setCurrentQuestion(null);
+    setLoading(true);
+
+    if (socketRef.current) {
+      socketRef.current.emit('submit_answer', {
+        answer: userAnswer.trim(),
+      });
+      setError('');
+    }
+  };
+
+  const nextQuestion = () => {
+    setWaitResponse(false);
+  };
+
+  const handleEndSession = () => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+      setIsConnected(false);
+      setQuizResult(null);
+      endSession();
+    }
+  };
 
   useEffect(() => {
     socketRef.current = io(SOCKET_URL);
@@ -69,57 +100,21 @@ export default function QuizPage({ userId, endSession }: QuiPageProps) {
     };
   }, []);
 
-  const startQuiz = () => {
-    if (!notes) {
-      setError('You dont have notes to start the quiz');
-      return;
+  useEffect(() => {
+    if (isStartQuiz) {
+      startQuiz();
     }
+  }, [isStartQuiz]);
 
+  const startQuiz = () => {
     if (socketRef.current) {
       socketRef.current.emit('start_quiz', {
         userId: userId.trim(),
-        notes,
+        notes: recentNotes.map((note) => note.content),
       });
       setQuizStarted(true);
       setError('');
       setQuizResult(null);
-    }
-  };
-
-  const submitAnswer = () => {
-    if (!userAnswer.trim()) {
-      setError('Please enter your answer');
-      return;
-    }
-
-    setLoading(true);
-
-    if (socketRef.current) {
-      socketRef.current.emit('submit_answer', {
-        answer: userAnswer.trim(),
-      });
-      setError('');
-    }
-  };
-
-  useEffect(() => {
-    if (recentNotes) {
-      setNotes(recentNotes.map((note) => note.content));
-    }
-  }, [recentNotes]);
-
-  useEffect(() => {
-    if (notes) {
-      startQuiz();
-    }
-  }, [notes]);
-
-  const handleEndSession = () => {
-    if (socketRef.current) {
-      socketRef.current.disconnect();
-      setIsConnected(false);
-      setQuizResult(null);
-      endSession();
     }
   };
 
@@ -130,26 +125,35 @@ export default function QuizPage({ userId, endSession }: QuiPageProps) {
           <section id="active-ai-session" className="bg-blue-600 rounded-lg p-6 animate-fade-in">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-medium text-white">Active AI Session</h2>
+                <h2 className="text-xl font-medium text-white">AI Session (beta)</h2>
                 <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm transition-all duration-300 animate-pulse">
                   In Progress
                 </span>
               </div>
 
               <div className="bg-white rounded-lg p-4 shadow-lg transition-all duration-300 animate-fade-in">
-                <p className="text-gray-700 mb-4 transition-all duration-300">
-                  {currentQuestion ? currentQuestion.question : '  Waiting for the first question...'}
+                <p className="text-gray-700 transition-all duration-300">
+                  {waitResponse
+                    ? 'Waiting for the AI answer...'
+                    : currentQuestion
+                    ? currentQuestion.question
+                    : '  Waiting for the first question...'}
                 </p>
 
-                {currentQuestion && currentQuestion.previousAnswerFeedback && (
-                  <div className="mb-4 p-3 bg-gray-50 rounded animate-fade-in">
-                    <p className="font-medium">Previous feedback:</p>
+                {waitResponse && currentQuestion && currentQuestion.previousAnswerFeedback && (
+                  <div className="mb-4 mt-4 p-3 bg-gray-50 rounded animate-fade-in">
                     <p>{currentQuestion.previousAnswerFeedback}</p>
-                    <p className="mt-1">Score: {currentQuestion.previousAnswerScore}/10</p>
+                    <p className="mt-1 mb-4">Score: {currentQuestion.previousAnswerScore}/10</p>
+                    <button
+                      className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
+                      onClick={nextQuestion}
+                    >
+                      Next Question
+                    </button>
                   </div>
                 )}
 
-                {currentQuestion && (
+                {currentQuestion && !waitResponse && (
                   <>
                     <textarea
                       value={userAnswer}

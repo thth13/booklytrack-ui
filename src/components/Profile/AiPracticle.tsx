@@ -55,7 +55,7 @@ const AiPracticle = ({ userId }: QuiPageProps) => {
       </section>
     )
   ) : (
-    <AiPracticleDialog userId={userId} endSession={() => setActive(false)} />
+    <AiPracticleDialog userId={userId} endSession={() => setActive(false)} isStartQuiz={active} />
   );
 };
 
