@@ -1,10 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useUserProfile } from '@/src/context/UserProfileContext';
 import { Book, BookNotes } from '@/src/types';
-import { getBookSummary, removeSummaryItem, updateSummaryItem } from '../../../lib/api';
-import { useEffect, useState } from 'react';
-
+import { getBookNotes, deleteNote, updateNote } from '../../../lib/api';
 import NoteForm from './NoteForm';
 import NoteItem from './NoteItem';
 
@@ -12,38 +11,42 @@ const BookNotesSection = ({ book }: { book: Book }) => {
   const [notes, setNotes] = useState<BookNotes[]>([]);
   const [showAddNoteForm, setShowAddNoteForm] = useState(false);
 
-  const { profile } = useUserProfile();
+  const { profile, recentNotes, setRecentNotes } = useUserProfile();
 
-  const handleDeleteSummary = async (indexToDelete: number) => {
+  const handleDeleteNote = async (id: string) => {
     if (notes && profile?.user) {
-      await removeSummaryItem(profile.user, book._id, indexToDelete);
-      setNotes(notes.filter((_, idx) => idx !== indexToDelete));
+      await deleteNote(id);
+
+      setNotes(notes.filter((note) => note._id !== id));
+      setRecentNotes(recentNotes.filter((note) => note._id !== id));
     }
   };
 
-  const handleEditSummary = async (indexToEdit: number, newValue: string) => {
+  const handleEditNote = async (id: string, newValue: string) => {
     if (notes && profile?.user) {
-      await updateSummaryItem(profile.user, book._id, indexToEdit, newValue);
-      setNotes((prev) => prev.map((item, idx) => (idx === indexToEdit ? { ...item, content: newValue } : item)));
+      await updateNote(id, newValue);
+
+      setNotes((prev) => prev.map((item) => (item._id === id ? { ...item, content: newValue } : item)));
+      setRecentNotes(recentNotes.map((item) => (item._id === id ? { ...item, content: newValue } : item)));
     }
   };
 
   useEffect(() => {
     if (!book || !profile) return;
 
-    const fetchBookSummary = async () => {
+    const fetchNotes = async () => {
       try {
-        const data = await getBookSummary(profile.user, book._id);
+        const data = await getBookNotes(profile.user, book._id);
 
         if (data) {
-          setNotes(data.summary);
+          setNotes(data);
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
       }
     };
 
-    fetchBookSummary();
+    fetchNotes();
   }, [book, profile]);
 
   return (
@@ -77,8 +80,8 @@ const BookNotesSection = ({ book }: { book: Book }) => {
           <NoteItem
             key={index}
             item={item}
-            deleteSummary={() => handleDeleteSummary(index)}
-            onEdit={(newValue) => handleEditSummary(index, newValue)}
+            deleteNote={() => handleDeleteNote(item._id)}
+            onEdit={(newValue) => handleEditNote(item._id, newValue)}
           />
         ))}
       </div>

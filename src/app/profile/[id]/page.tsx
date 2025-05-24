@@ -46,7 +46,7 @@ export default async function Profile({ params }: ProfilePageProps) {
                   <CurrentlyReading userId={user.user} />
                 </>
               )}
-              <RecentNotes userId={user.user} />
+              <RecentNotes />
             </div>
           </div>
         </div>

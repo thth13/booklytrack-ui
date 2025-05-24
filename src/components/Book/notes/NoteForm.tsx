@@ -1,8 +1,9 @@
 'use client';
 
 import { BookNotes, UserProfile } from '@/src/types';
-import { addBookSummmary } from '../../../lib/api';
+import { addNote } from '../../../lib/api';
 import { useState } from 'react';
+import { useUserProfile } from '@/src/context/UserProfileContext';
 
 interface NoteFormProps {
   profile?: UserProfile | null;
@@ -15,8 +16,9 @@ interface NoteFormProps {
 
 const NoteForm = ({ profile, hideForm, bookId, setNotes, onEdit, noteContent }: NoteFormProps) => {
   const [noteField, setNoteField] = useState<string>(noteContent || '');
+  const { recentNotes, setRecentNotes } = useUserProfile();
 
-  const addNote = async (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
     if (onEdit) {
@@ -25,19 +27,21 @@ const NoteForm = ({ profile, hideForm, bookId, setNotes, onEdit, noteContent }: 
     }
 
     if (profile?.user && bookId && noteField && setNotes) {
-      await addBookSummmary(profile?.user, bookId, noteField);
-      setNotes((prev) => [...prev, { content: noteField, createdAt: new Date() }]);
+      const newNote = await addNote(profile.user, bookId, noteField);
+      setNotes((prev) => [newNote, ...prev]);
+      setRecentNotes([newNote, ...(recentNotes || [])]);
+
       setNoteField('');
       hideForm();
     }
   };
 
   return (
-    <form onSubmit={addNote} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
       {/* <ReactQuill
-                className="w-full  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                placeholder="Write your note here..."
-              /> */}
+          className="w-full  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          placeholder="Write your note here..."
+      /> */}
       <textarea
         value={noteField}
         onChange={(e) => setNoteField(e.target.value)}

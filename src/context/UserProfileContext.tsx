@@ -8,21 +8,23 @@ import { useBook } from './BookContext';
 
 interface UserProfileContextType {
   profile: UserProfile | null;
-  recentNotes: BookNotes[] | null;
+  recentNotes: BookNotes[];
+  setRecentNotes: (notes: BookNotes[]) => void;
   fetchRecentNotes: (userId: string) => void;
   addBookToProfile: (bookId: string, userId: string, newCategory: ReadCategory, currentCategory?: ReadCategory) => void;
 }
 
 export const UserProfileContext = createContext<UserProfileContextType>({
   profile: null,
-  recentNotes: null,
+  recentNotes: [],
+  setRecentNotes: () => {},
   fetchRecentNotes: () => {},
   addBookToProfile: () => {},
 });
 
 export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [recentNotes, setRecentNotes] = useState<BookNotes[] | null>(null);
+  const [recentNotes, setRecentNotes] = useState<BookNotes[]>([]);
   const { setCurrentCategory } = useBook();
 
   const fetchProfile = async (userId: string) => {
@@ -32,6 +34,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const fetchRecentNotes = async (userId: string) => {
     const data = await getRecentNotes(userId);
+
     setRecentNotes(data);
   };
 
@@ -57,7 +60,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }, []);
 
   return (
-    <UserProfileContext.Provider value={{ profile, addBookToProfile, recentNotes, fetchRecentNotes }}>
+    <UserProfileContext.Provider value={{ profile, addBookToProfile, recentNotes, setRecentNotes, fetchRecentNotes }}>
       {children}
     </UserProfileContext.Provider>
   );

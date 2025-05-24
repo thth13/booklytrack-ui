@@ -7,11 +7,11 @@ import { useState } from 'react';
 
 interface NoteItemProps {
   item: BookNotes;
-  deleteSummary: () => void;
+  deleteNote: () => void;
   onEdit?: (newValue: string) => void;
 }
 
-const NoteItem = ({ item, deleteSummary, onEdit }: NoteItemProps) => {
+const NoteItem = ({ item, deleteNote, onEdit }: NoteItemProps) => {
   const [showEditForm, setShowEditForm] = useState(false);
 
   return (
@@ -32,7 +32,7 @@ const NoteItem = ({ item, deleteSummary, onEdit }: NoteItemProps) => {
             <button onClick={() => setShowEditForm(true)} className="p-2 text-gray-600 hover:text-blue-600">
               <FontAwesomeIcon icon={faPencil} />
             </button>
-            <button onClick={deleteSummary} className="p-2 text-gray-600 hover:text-red-600">
+            <button onClick={deleteNote} className="p-2 text-gray-600 hover:text-red-600">
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>

@@ -1,4 +1,4 @@
 export * from './auth';
 export * from './profile';
 export * from './book';
-export * from './bookSummary';
+export * from './bookNotes';

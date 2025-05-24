@@ -3,16 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faBookOpen, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getReadBooks, addBookSummmary } from '@/src/lib/api';
+import { addNote, getReadBooks } from '@/src/lib/api';
 import { Book, ReadCategory } from '@/src/types';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useUserProfile } from '@/src/context/UserProfileContext';
 
 interface CurrentlyReadingProps {
   userId: string;
 }
 
 const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
+  const { recentNotes, setRecentNotes } = useUserProfile();
   const [books, setBooks] = useState<Book[]>([]);
   const [current, setCurrent] = useState(0);
   const [note, setNote] = useState('');
@@ -20,7 +22,10 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
   const handleAddNote = async () => {
     if (!note.trim()) return;
 
-    await addBookSummmary(userId, books[current]._id, note);
+    const newNote = await addNote(userId, books[current]._id, note);
+    if (setRecentNotes) {
+      setRecentNotes([newNote, ...(recentNotes || [])]);
+    }
     setNote('');
   };
 
@@ -97,6 +102,7 @@ const CurrentlyReading = ({ userId }: CurrentlyReadingProps) => {
           <Link href={`/books/${books[current].googleId}`} className="w-48">
             {books[current].imageLinks.small && (
               <Image
+                key={books[current].imageLinks.small}
                 width={180}
                 height={270}
                 className="w-full object-cover rounded-lg shadow-lg"
