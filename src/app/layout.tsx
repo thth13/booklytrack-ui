@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { AuthProvider } from '../context/AuthContext';
 import { ThemeProvider } from '@/src/context/ThemeContext';
 import { UserProfileProvider } from '../context/UserProfileContext';
@@ -70,6 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-full text-base-content">
+        <GoogleAnalytics gaId="G-Y3MT7ZXTS8" />
         <ThemeProvider>
           <UserProfileProvider>
             <BookProvider>
