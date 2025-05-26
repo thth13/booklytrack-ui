@@ -50,7 +50,11 @@ export default async function UserBooksPage({ userId, category }: UserBooksPageP
             </div>
           </section>
           <section className="space-y-4">
-            {books && books.map((book) => <BooksList key={book.googleId} book={book} />)}
+            {books && books.length > 0 ? (
+              books.map((book) => <BooksList key={book.googleId} book={book} />)
+            ) : (
+              <div className="text-gray-500 text-center">No books have been added yet.</div>
+            )}
           </section>
         </div>
       </main>
