@@ -9,7 +9,7 @@ const BookSection = ({ book }: { book: Book }) => {
       <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         <div className="w-full md:w-1/3 max-w-[300px] mx-auto md:mx-0 mb-4 md:mb-0 flex flex-col items-center">
           <Image
-            className="w-full object-cover h-auto rounded-lg shadow-lg max-h-[400px] md:max-h-none"
+            className="w-full object-cover h-auto rounded-lg shadow-lg md:max-h-none"
             src={book.imageLinks && book.imageLinks.medium ? book.imageLinks.medium : noBookImage}
             alt={book.title}
             width={500}
