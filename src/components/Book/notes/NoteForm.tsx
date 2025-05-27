@@ -45,14 +45,21 @@ const NoteForm = ({ profile, hideForm, bookId, setNotes, onEdit, noteContent }: 
       <textarea
         value={noteField}
         onChange={(e) => setNoteField(e.target.value)}
-        className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        className="w-full h-28 sm:h-32 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm sm:text-base"
         placeholder="Write your note here..."
       />
-      <div className="flex justify-end space-x-3">
-        <button onClick={hideForm} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+      <div className="flex flex-col sm:flex-row sm:justify-end gap-2 sm:gap-3">
+        <button
+          type="button"
+          onClick={hideForm}
+          className="px-4 py-2 text-gray-600 hover:text-gray-800 w-full sm:w-auto"
+        >
           Cancel
         </button>
-        <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <button
+          type="submit"
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full sm:w-auto"
+        >
           Save Note
         </button>
       </div>

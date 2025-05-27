@@ -34,19 +34,27 @@ export default async function Profile({ params }: ProfilePageProps) {
     <>
       <Header noLink />
       <main className="pt-20 min-h-[800px] bg-gray-50">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex gap-8">
-            <div className="w-80 space-y-6">
+        <div className="container mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            <div className="w-full lg:w-80 lg:space-y-6">
               <ProfileCard isMyProfile={isMyProfile} user={user} />
-              {isMyProfile && <AiPracticle userId={user.user} />}
+              {isMyProfile && (
+                <div className="hidden lg:block">
+                  <AiPracticle userId={user.user} />
+                </div>
+              )}
             </div>
             <div className="flex-1">
               {isMyProfile && (
                 <>
                   <Actions />
                   <CurrentlyReading userId={user.user} />
+                  <div className="block lg:hidden mt-6 mb-6 lg:mb-0">
+                    <AiPracticle userId={user.user} />
+                  </div>
                 </>
               )}
+
               <RecentNotes />
             </div>
           </div>

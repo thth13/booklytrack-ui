@@ -5,11 +5,11 @@ import BookStatusButton from './BookStatusButton';
 
 const BookSection = ({ book }: { book: Book }) => {
   return (
-    <section id="book-details" className="bg-white rounded-xl p-8 shadow-sm mb-8">
-      <div className="flex gap-8">
-        <div className="w-1/3 max-w-[300px]">
+    <section id="book-details" className="bg-white rounded-xl p-4 sm:p-8 shadow-sm mb-8">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+        <div className="w-full md:w-1/3 max-w-[300px] mx-auto md:mx-0 mb-4 md:mb-0 flex flex-col items-center">
           <Image
-            className="w-full object-cover h-auto rounded-lg shadow-lg"
+            className="w-full object-cover h-auto rounded-lg shadow-lg max-h-[400px] md:max-h-none"
             src={book.imageLinks && book.imageLinks.medium ? book.imageLinks.medium : noBookImage}
             alt={book.title}
             width={500}
@@ -17,13 +17,15 @@ const BookSection = ({ book }: { book: Book }) => {
             sizes="80vw"
             loading="lazy"
           />
-          <BookStatusButton book={book} />
+          <div className="w-full mt-4">
+            <BookStatusButton book={book} />
+          </div>
         </div>
         <div className="flex-1">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">{book.title}</h1>
-              <p className="text-xl text-gray-600 mt-2">by {book.authors?.join(', ') || '—'}</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">{book.title}</h1>
+              <p className="text-lg sm:text-xl text-gray-600 mt-2">by {book.authors?.join(', ') || '—'}</p>
             </div>
             {/* Book rating */}
             {/* <div className="flex items-center space-x-2">
@@ -38,19 +40,22 @@ const BookSection = ({ book }: { book: Book }) => {
             </div> */}
           </div>
           <div className="mt-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">About the Book</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">About the Book</h2>
             {book.description && (
-              <div className="text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: book.description }} />
+              <div
+                className="text-gray-600 leading-relaxed text-sm sm:text-base"
+                dangerouslySetInnerHTML={{ __html: book.description }}
+              />
             )}
           </div>
-          <div className="mt-8 grid grid-cols-3 gap-4">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-gray-600">Pages</div>
-              <div className="text-xl font-semibold text-gray-800">{book.pageCount}</div>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 bg-gray-50 rounded-lg text-center">
+              <div className="text-gray-600 text-sm sm:text-base">Pages</div>
+              <div className="text-lg sm:text-xl font-semibold text-gray-800">{book.pageCount}</div>
             </div>
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-gray-600">Published</div>
-              <div className="text-xl font-semibold text-gray-800">
+            <div className="p-4 bg-gray-50 rounded-lg text-center">
+              <div className="text-gray-600 text-sm sm:text-base">Published</div>
+              <div className="text-lg sm:text-xl font-semibold text-gray-800">
                 {book.publishedDate
                   ? typeof book.publishedDate === 'string'
                     ? (book.publishedDate as string).match(/^\d{4}/)?.[0] || book.publishedDate
@@ -58,9 +63,9 @@ const BookSection = ({ book }: { book: Book }) => {
                   : '—'}
               </div>
             </div>
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-gray-600">Language</div>
-              <div className="text-xl font-semibold text-gray-800">{book.language}</div>
+            <div className="p-4 bg-gray-50 rounded-lg text-center">
+              <div className="text-gray-600 text-sm sm:text-base">Language</div>
+              <div className="text-lg sm:text-xl font-semibold text-gray-800">{book.language}</div>
             </div>
           </div>
         </div>

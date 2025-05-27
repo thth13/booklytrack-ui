@@ -66,26 +66,29 @@ export default function FindBooksPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1 pt-20 min-h-[800px] bg-gray-100">
-        <div className="container mx-auto px-6 py-8">
-          <section id="search-section" className="mb-8">
-            <div className="flex items-center space-x-4 bg-white rounded-2xl p-4 shadow-sm">
-              <FontAwesomeIcon icon={faMagnifyingGlass} className="text-gray-400 text-xl" />
+        <div className="container mx-auto px-2 sm:px-6 py-4 sm:py-8">
+          <section id="search-section" className="mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 bg-white rounded-2xl p-3 sm:p-4 shadow-sm">
+              <div className="hidden sm:flex items-center gap-2">
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="text-gray-400 text-xl" />
+              </div>
               <input
                 type="text"
                 placeholder="Search for books, authors, or ISBN..."
-                className="flex-1 outline-none text-lg"
+                className="flex-1 outline-none text-base sm:text-lg py-2 px-3 rounded-lg border border-gray-200 bg-gray-50"
                 value={query}
                 onChange={handleSearch}
               />
-
-              <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors">
+              <button className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors w-full sm:w-auto">
                 Search
               </button>
             </div>
           </section>
           <section className="space-y-4">
             {loading && <div>Loading...</div>}
-            {!loading && books.length === 0 && query && <div style={{ color: '#888' }}>Books not found</div>}
+            {!loading && books.length === 0 && query && (
+              <div className="text-center text-gray-500 text-sm sm:text-base">Books not found</div>
+            )}
             {books.map((book) => (
               <BooksList key={book.googleId} book={book} />
             ))}
