@@ -33,7 +33,7 @@ export default async function Profile({ params }: ProfilePageProps) {
   return (
     <>
       <Header noLink />
-      <main className="pt-20 min-h-[800px] bg-gray-50">
+      <main className="pt-15 min-h-[800px] bg-gray-50">
         <div className="container mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             <div className="w-full lg:w-80 lg:space-y-6">

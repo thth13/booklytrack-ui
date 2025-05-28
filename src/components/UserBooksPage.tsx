@@ -16,7 +16,7 @@ export default async function UserBooksPage({ userId, category }: UserBooksPageP
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 pt-20 min-h-[800px] bg-gray-50">
+      <main className="flex-1 pt-15 min-h-[800px] bg-gray-50">
         <div className="container mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8">
           <section id="books-filter" className="mb-6 sm:mb-8">
             <div className="flex justify-center sm:justify-start">

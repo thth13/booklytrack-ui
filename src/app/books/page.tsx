@@ -65,7 +65,7 @@ export default function FindBooksPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 pt-20 min-h-[800px] bg-gray-100">
+      <main className="flex-1 pt-15 min-h-[800px] bg-gray-100">
         <div className="container mx-auto px-2 sm:px-6 py-4 sm:py-8">
           <section id="search-section" className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 bg-white rounded-2xl p-3 sm:p-4 shadow-sm">

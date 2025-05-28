@@ -98,8 +98,8 @@ const EditProfile = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 pt-20 bg-gray-50">
-        <div className="container mx-auto px-6 py-8">
+      <main className="flex-1 pt-15 bg-gray-50">
+        <div className="container mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8">
           <section id="edit-profile" className="bg-white rounded-xl shadow-sm p-8 mb-8">
             <div className="max-w-3xl mx-auto">
               <form onSubmit={handleSubmit} id="profile-edit-form" className="space-y-6">
