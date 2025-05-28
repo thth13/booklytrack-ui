@@ -41,15 +41,15 @@ export default function AuthForm({ isLoginProp }: AuthFormProps) {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Пожалуйста, введите корректный email';
+      newErrors.email = 'Please enter a valid email';
     }
 
     if (formData.password.length < 5) {
-      newErrors.password = 'Пароль должен содержать минимум 5 символов';
+      newErrors.password = 'Password must be at least 5 characters';
     }
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают';
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
     setErrors(newErrors);

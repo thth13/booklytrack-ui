@@ -9,14 +9,13 @@ const ThemeContext = createContext<{
 } | null>(null);
 
 const getInitialTheme = (): Theme => {
-  // Проверяем, находимся ли мы на клиенте
   if (typeof window !== 'undefined') {
-    // Проверяем localStorage
     const savedTheme = localStorage.getItem('theme') as Theme;
+
     if (savedTheme) {
       return savedTheme;
     }
-    // Если нет сохраненной темы, проверяем системные предпочтения
+
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
@@ -38,7 +37,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('theme', newTheme);
   };
 
-  // Предотвращаем проблему гидратации
   if (!mounted) {
     return null;
   }

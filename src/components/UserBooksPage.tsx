@@ -70,7 +70,8 @@ async function fetchBooks(id: string, category: ReadCategory): Promise<Book[] | 
     const data = await getReadBooks(id, category);
     return data;
   } catch (err) {
-    console.error('Ошибка получения книг:', err);
+    console.error('Error book loading:', err);
+
     return null;
   }
 }
