@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { searchBooks } from '@/src/lib/api';
+import { getLatestBooks, searchBooks } from '@/src/lib/api';
 import BooksList from '@/src/components/BooksList';
 import { Book } from '@/src/types';
 import Header from '@/src/components/Header';
@@ -25,9 +25,15 @@ export default function FindBooksPage() {
     }
   }, [query, books]);
 
+  const getLatest = async () => {
+    const books = await getLatestBooks();
+
+    setBooks(books);
+  };
+
   useEffect(() => {
     if (query.trim() === '') {
-      setBooks([]);
+      getLatest();
       setLoading(false);
       return;
     }

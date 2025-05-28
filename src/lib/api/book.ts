@@ -41,6 +41,16 @@ export async function searchBooks(query: string) {
   return res.data.items || [];
 }
 
+export async function getLatestBooks(): Promise<Book[]> {
+  try {
+    const res = await api.get(`${API_URL}/book/latest`);
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getReadBooks(userId: string, readCategory: ReadCategory) {
   try {
     const res = await api.get(`${API_URL}/profile/get-read-books/${userId}/${readCategory}`);
