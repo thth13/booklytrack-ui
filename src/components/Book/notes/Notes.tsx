@@ -52,7 +52,10 @@ const BookNotesSection = ({ book }: { book: Book }) => {
   return (
     <section id="book-notes" className="bg-white rounded-xl p-8 shadow-sm mb-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">My Notes</h2>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">My Notes</h2>
+          <span className="text-sm text-gray-500">{notes.length} notes</span>
+        </div>
         {!showAddNoteForm && (
           <button
             onClick={() => setShowAddNoteForm(true)}
