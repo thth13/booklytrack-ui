@@ -16,7 +16,7 @@ const RecentNotes = () => {
         </div>
         <div className="text-center py-10">
           <FontAwesomeIcon icon={faBookOpen} className="text-4xl text-gray-300 mb-4" />
-          <p className="text-gray-500">You don't have any recent notes yet.</p>
+          <p className="text-gray-500">You don&apos;t have any recent notes yet.</p>
         </div>
       </section>
     );
