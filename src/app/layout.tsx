@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-full text-base-content">
-        <GoogleAnalytics gaId="G-2T8QM142RE" />
+        <GoogleAnalytics gaId="G-Y3MT7ZXTS8" />
         <ThemeProvider>
           <UserProfileProvider>
             <BookProvider>
